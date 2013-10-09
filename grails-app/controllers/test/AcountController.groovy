@@ -17,90 +17,90 @@ class AcountController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        [userInstanceList: Acount.list(params), userInstanceTotal: Acount.count()]
+        [acountInstanceList: Acount.list(params), acountInstanceTotal: Acount.count()]
     }
 
     def create() {
-        [userInstance: new Acount(params)]
+        [acountInstance: new Acount(params)]
     }
 
     def save() {
-        def userInstance = new Acount(params)
-        if (!userInstance.save(flush: true)) {
-            render(view: "create", model: [userInstance: userInstance])
+        def acountInstance = new Acount(params)
+        if (!acountInstance.save(flush: true)) {
+            render(view: "create", model: [acountInstance: acountInstance])
             return
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-        redirect(action: "show", id: userInstance.id)
+        flash.message = message(code: 'default.created.message', args: [message(code: 'acount.label', default: 'User'), acountInstance.id])
+        redirect(action: "show", id: acountInstance.id)
     }
 
     def show(Long id) {
-        def userInstance = Acount.get(id)
-        if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
+        def acountInstance = Acount.get(id)
+        if (!acountInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'acount.label', default: 'User'), id])
             redirect(action: "list")
             return
         }
 
-        [userInstance: userInstance]
+        [acountInstance: acountInstance]
     }
 
     def edit(Long id) {
-        def userInstance = Acount.get(id)
-        if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
+        def acountInstance = Acount.get(id)
+        if (!acountInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'acount.label', default: 'User'), id])
             redirect(action: "list")
             return
         }
 
-        [userInstance: userInstance]
+        [acountInstance: acountInstance]
     }
 
     def update(Long id, Long version) {
-        def userInstance = Acount.get(id)
-        if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
+        def acountInstance = Acount.get(id)
+        if (!acountInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'acount.label', default: 'User'), id])
             redirect(action: "list")
             return
         }
 
         if (version != null) {
-            if (userInstance.version > version) {
-                userInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'user.label', default: 'User')] as Object[],
-                          "Another user has updated this User while you were editing")
-                render(view: "edit", model: [userInstance: userInstance])
+            if (acountInstance.version > version) {
+                acountInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                          [message(code: 'acount.label', default: 'User')] as Object[],
+                          "Another acount has updated this User while you were editing")
+                render(view: "edit", model: [acountInstance: acountInstance])
                 return
             }
         }
 
-        userInstance.properties = params
+        acountInstance.properties = params
 
-        if (!userInstance.save(flush: true)) {
-            render(view: "edit", model: [userInstance: userInstance])
+        if (!acountInstance.save(flush: true)) {
+            render(view: "edit", model: [acountInstance: acountInstance])
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-        redirect(action: "show", id: userInstance.id)
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'acount.label', default: 'User'), acountInstance.id])
+        redirect(action: "show", id: acountInstance.id)
     }
 
     def delete(Long id) {
-        def userInstance = Acount.get(id)
-        if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
+        def acountInstance = Acount.get(id)
+        if (!acountInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'acount.label', default: 'User'), id])
             redirect(action: "list")
             return
         }
 
         try {
-            userInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), id])
+            acountInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'acount.label', default: 'User'), id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'user.label', default: 'User'), id])
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'acount.label', default: 'User'), id])
             redirect(action: "show", id: id)
         }
     }
@@ -109,13 +109,13 @@ class AcountController {
 	
 	/**
 	 * chen modify
-	 * user login.undone
+	 * acount login.undone
 	 */
 	def login = {
 		def acount = Acount.findByAcountNameAndPassword(params.acountname,params.password);
 		def tmp;
 		if(acount){
-			session.userId = acount.id;
+			session.acountId = acount.id;
 			flash.message = message(code:'login.success',args:[acount.acountName]);
 			println("login success!");
 //			redirect(url:"/main1.gsp");
@@ -128,7 +128,7 @@ class AcountController {
 			render tmp as JSON;
 		}
 		
-//		println("login username:"+params.username+"|password:"+params.password);
+//		println("login acountname:"+params.acountname+"|password:"+params.password);
 		
 		
 	}
@@ -139,7 +139,7 @@ class AcountController {
 	}
 	
 	def auth(){
-		if(!session.userId){
+		if(!session.acountId){
 			redirect(action:'login',controller:'acount')
 			return false
 		}

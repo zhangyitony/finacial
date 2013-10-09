@@ -2,6 +2,8 @@ package cn.gov.xaczj.domain;
 
  import cn.gov.xaczj.domain.CustomizableEntity;
  import java.util.Date;
+ 
+ 
  public class Table extends CustomizableEntity {
 
 	 private int id;
@@ -9,7 +11,7 @@ package cn.gov.xaczj.domain;
 	 private int initFillAcount;
 	 private int inChargeAcount;
 	 private short status;
-
+	 private Date planTime;
 	
 	 public int getId() {
 	     return id;
@@ -49,6 +51,14 @@ package cn.gov.xaczj.domain;
 
 	public void setStatus(short status) {
 		this.status = status;
+	}
+
+	public Date getPlanTime() {
+		return planTime;
+	}
+
+	public void setPlanTime(Date planTime) {
+		this.planTime = planTime;
 	}
 
 	

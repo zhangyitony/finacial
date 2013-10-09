@@ -500,5 +500,11 @@
 		</script> 
 	</head>
 	<body>
+		<div class="userId">
+<%--	预期：	用此处来防止直接访问该界面，所有进入该界面的请求都应是从controller那通过授权转过来的，如果此处无法取到userId的值则转向登录界面。
+		实验结果：undo		
+--%>
+			${userId}
+		</div> 
 	</body>
 </html>

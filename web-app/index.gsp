@@ -46,7 +46,7 @@
 											},
 		                     	       success:function(form,action){
 											Ext.Msg.alert('Tip','login success');
-											window.location.href="main1.gsp"
+											window.location.href="mockMainDisplay/showMain"
 											}
 			                     	        });
 

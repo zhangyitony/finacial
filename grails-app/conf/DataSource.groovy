@@ -14,20 +14,20 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev"
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev_chen"
         }
     }
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev"
+            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev_chen"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev"
+            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev_chen"
             pooled = true
             properties {
                maxActive = -1

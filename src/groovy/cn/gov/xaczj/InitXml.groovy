@@ -17,7 +17,7 @@ class InitXml {
      <id column="id" name="id">
          <generator class="native"/>
      </id>
-		
+
      <dynamic-component insert="true" name="customProperties" optimistic-lock="true" unique="false" update="true">
      </dynamic-component>
  </class>'''

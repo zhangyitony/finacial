@@ -35,10 +35,7 @@ class TableController {
 	
 	def deleteall()
 	{
-//		HibernateUtil.getInstance().getCurrentSession();		
-//		  System.out.println(HibernateUtil.getInstance() );
-//		  System.out.println("11111111" );
-	//	CustomizableEntityManager contactEntityManager = new CustomizableEntityManagerImpl(Table.class,"table1");
+
 		Session session = HibernateUtil.getInstance().getCurrentSession();			
 		Transaction tx = null;		
 		try {		
@@ -51,14 +48,12 @@ class TableController {
 		System.out.println("delete count : " + count); //删除条数		
 		} catch (Exception e) {	
 		println e;	
-//						   if (tx != null) {		
-//							   tx.rollback();		
-//		}		
+		
 		} finally {		
 		System.out.println("delete count : " + count); //删除条数
 		}
 		
-//		HibernateUtil.getInstance().close();
+
 	}
     def save() {	
 		
@@ -106,6 +101,11 @@ class TableController {
 						 }
 					  }					  			
 				 }
+				 table.setInChargeAcount();
+				 table.setInitFillAcount();
+				 table.setPlanTime();
+				 table.setInitFillTime();
+				 table.setInChargeAcount();
 				 Serializable id = session.save("table1",table);
 //				 if ( i % 20 == 0 ) { //20, same as the JDBC batch size
 //					 //flush a batch of inserts and release memory:
@@ -125,68 +125,7 @@ class TableController {
 			  }
 	}
 	
-//	  def save() {	
-//	//	deleteall();
-//		
-//		try {
-//			  def text=params.a;			
-//			  println "aaaa";
-//			  def slurper = new JsonSlurper()		  			
-//			  def result = slurper.parseText(text);
-//		  println result.get(0);
-//		  println result.size();
-//			  for(i in 0..result.size()-1)
-//			 {
-//				 HibernateUtil.getInstance().getCurrentSession();
-//				 
-//				   System.out.println(HibernateUtil.getInstance() );
-//				   System.out.println("11111111" );
-//				   CustomizableEntityManager contactEntityManager = new CustomizableEntityManagerImpl(Table.class,"table1");
-//				 Session session = HibernateUtil.getInstance().getCurrentSession();
-//				 
-//				 Transaction tx = session.beginTransaction();
-//				  Table table = new Table();
-//				 result.get(i).each{
-//					println it.value;
-//					String aa = it.value;
-//					 if (aa!=null && aa!="")
-//					{
-//						def tmp;
-//						def ta=tableList.get(0);
-//						def ina=ta.get(it.key);
-//						 if(ina=="big_decimal")
-//						 {
-//							 Class c = Class.forName("java.math.BigDecimal");
-//							 tmp = c.newInstance(it.value);
-//						 }
-//						 else
-//						 {
-//							 tmp=it.value;
-//						 }
-//						println tmp;
-//						  table.setValueOfCustomField(it.key,tmp);
-//					}
-//					
-//					
-//				 }
-//				 Serializable id = session.save("table1",table);
-////				 if ( i % 20 == 0 ) { //20, same as the JDBC batch size
-////					 //flush a batch of inserts and release memory:
-////					 session.flush();
-////					 session.clear();
-////				 }
-//				 tx.commit();
-//				 HibernateUtil.getInstance().close();
-//			 }
-//			 	
-//			  } catch (Exception e) {
-//					 if (tx != null) {
-//						 tx.rollback();
-//					 }
-//					  System.out.println("e = " + e);
-//			  }
-//	}							 
-		
+
 	
 	def select(Long id)
 	{

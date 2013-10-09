@@ -24,14 +24,9 @@ class BootStrap {
 	def initCustomField = {
 //		addFiledOBO();
 		
-		System.out.println("in boot strap");
-		
-		
-		initXml();
-		
-		addFiledsOT();
-		
-		
+		System.out.println("in boot strap");		
+		initXml();		
+		addFiledsOT();		
 		Session session = HibernateUtil.getInstance().getCurrentSession();
 				 Transaction tx = session.beginTransaction();
 				 try {
@@ -96,7 +91,12 @@ class BootStrap {
 						id("column":"id" ,"name":"id"){
 								"generator"( "class":"native")
 						}
-						property("column":"fld_name","generated":"never","lazy":"false","name":"name","optimistic-lock":"true","type":"string","unique":"false")
+
+						property("column":"initFillTime","generated":"never","lazy":"false","name":"initFillTime","optimistic-lock":"true","type":"date","unique":"false")
+						property("column":"initFillAcount","generated":"never","lazy":"false","name":"initFillAcount","optimistic-lock":"true","type":"integer","unique":"false")
+						property("column":"inChargeAcount","generated":"never","lazy":"false","name":"inChargeAcount","optimistic-lock":"true","type":"integer","unique":"false")
+						property("column":"status","generated":"never","lazy":"false","name":"status","optimistic-lock":"true","type":"short","unique":"false")
+						property("column":"planTime","generated":"never","lazy":"false","name":"planTime","optimistic-lock":"true","type":"date","unique":"false")
 						"dynamic-component"("insert":"true","name":"customProperties","optimistic-lock":"true","unique":"false","update":"true"){}
 					}
 				}

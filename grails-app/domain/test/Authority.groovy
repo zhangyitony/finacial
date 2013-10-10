@@ -1,7 +1,7 @@
 package test
 
 class Authority {
-	String authority
+	short authority
 	static belongsTo = [acount:Acount, form:Form]
     static constraints = {
     }

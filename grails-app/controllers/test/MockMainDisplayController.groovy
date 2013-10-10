@@ -1,24 +1,41 @@
 package test
 
+import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 
 class MockMainDisplayController {
-
+	
+	def beforeInterceptor = [action:this.&auth];
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 	def showMain(){
-		//方法执行完毕后会尝试进入-first->showMain.jsp -then->showMain.gsp,讨论主页面是否需要改名称（？）。
-		[userid:session.uerId]
+		//鏂规硶鎵ц瀹屾瘯鍚庝細灏濊瘯杩涘叆-first->showMain.jsp -then->showMain.gsp,璁ㄨ涓婚〉闈㈡槸鍚﹂渶瑕佹敼鍚嶇О锛堬紵锛夈�
+		
 	}
 	
-	def private auth(){
-		if(!session.userId){
-			redirect(action:'login',controller:'acount')
+	def getShouldFillTables(){
+		Acount loginAcount = session.acount;
+//		def temp = PlanTime.findByAcountId(loginAcount.id);
+//		def aa = Form.get(temp.tableId);
+//		
+		def results = PlanTime.findAll("\
+		from PlanTime as p, \
+		     Form as f \
+		where p.tableId = f.no and p.acountId = ?", [(int)loginAcount.id])
+//TODO:	将results按协议组成有效json；	
+		println results;
+		render results as JSON;
+	}
+	
+	private auth(){
+		println("in the auth");
+		if(!session.acount){
+			redirect(url:'/index.gsp')
 			return false
 		}
 	}
 	
-	def beforeInterceprtor = [action:this.&auth,expect:['someAction']]
+	
 	
 	
 //    def index() {

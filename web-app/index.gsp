@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all.css')}"></link>
+	<link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all.css')}"/>
 <%--	 <link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all-neptune.css')}" ></link>--%>
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/bootstrap.js')}"></script>
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/ext-all.js')}"></script>
@@ -14,7 +14,7 @@
 	              	     y:70,
 	                     height:120,
 	                     width: 350,
-<%--	                     standardSubmit:true,--%>
+	                     standardSubmit:true,
 	                     defaultType: 'textfield',
 	                     items: [{
 	                        fieldLabel: '用户名',
@@ -35,18 +35,23 @@
 	                          },{
 	                         text: '登陆',
 	                             handler:function(){
-	                     	        var f=this.up('form').getForm();
-
-	                     	        f.submit({
+	                     	       this.up('form').getForm().submit({
 										url:'acount/login',
 										method:'POST',
-										failure:function(form,action){
+										failure:function(response,options){
 											Ext.Msg.alert('Tip','login error');
 											
 											},
-		                     	       success:function(form,action){
+		                     	       success:function(response,options){
 											Ext.Msg.alert('Tip','login success');
-											window.location.href="mockMainDisplay/showMain"
+											
+											
+<%--											alert(options.responseText);--%>
+<%--											var resultJson =Ext.JSON.decode(response.responseText);--%>
+<%--											alert(resultJson);--%>
+<%--											var url = resultJson.data;--%>
+<%--											alert(url);--%>
+<%--											window.location.href=url;--%>
 											}
 			                     	        });
 
@@ -61,9 +66,9 @@
 		                  width:1000,
 		                  height:500,
 		                  items:[
-		                     {region:'north',height:200,split:true,html:"logo"},
-		                     {region:'west',width:500,split:true,html:"风采展示"},
-		                     {region:'center',
+		                     {xtype:'panel',region:'north',height:142,split:true,html:"logo",bodyStyle:{background:'url(images/index.jpg)'}  },
+		                     {xtype:'panel',region:'west',width:500,split:true,html:"风采展示",bodyStyle:{background:'url(images/zhonglou.jpg)'} },
+		                     {xtype:'panel',region:'center',
 		                     	layout:{type:"absolute"},
 		                     	split:true,
 		                     	items:[
@@ -72,14 +77,27 @@
 		                     }
 		                  ]
 		              })   
-		              var viewport=new Ext.Viewport({
-		            	  layout: {
-		            		  align: 'middle',
-		            		  pack: 'center',
-		            		  type: 'hbox'
-		            		},
-		            	  items:[main]
-		            	});	
+<%--		              var viewport=new Ext.Viewport({--%>
+<%--		            	  layout: {--%>
+<%--		            		  align: 'middle',--%>
+<%--		            		  pack: 'center',--%>
+<%--		            		  type: 'hbox'--%>
+<%--		            		},--%>
+<%--		            		bodyStyle:{background:'#dae7f6'},--%>
+<%--		            	  items:[main]--%>
+<%--		            	});	--%>
+	            	  var back=Ext.create("Ext.panel.Panel",{
+	            		  bodyStyle:{background:'#dae7f6'},
+	            		  width:document.body.scrollWidth,
+		            	  height:document.body.scrollHeight,
+		            	  renderTo:Ext.getBody(),
+  		            	  layout: {
+  		            		  align: 'middle',
+  		            		  pack: 'center',
+  		            		  type: 'hbox'
+  		            		},
+	            		  items:[main]
+	            	  })
 		       })
  
 

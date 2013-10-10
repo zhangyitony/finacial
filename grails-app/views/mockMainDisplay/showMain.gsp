@@ -24,7 +24,15 @@
 						 Ext.create("Ext.button.Button",{
 						 	text:"填报表格",
 						 	width:200,
-						 	handler:function(){  
+						 	handler:function(){
+						 		 Ext.Ajax.request({
+									 url:'/test/mockMainDisplay/getShouldFillTables',
+									 method:'POST',
+									 success: function(response){
+										 Ext.Msg.alert(response.responseText);
+										 }
+							     });
+							     
 						 		center.layout.setActiveItem(1);
 						 	}
 						 }),
@@ -33,15 +41,35 @@
 							width:200,
 							menu:Ext.create("Ext.menu.Menu",{
 								items:[
-								{text:'查看原始表',handler:function(){							   	
-								   	   center.layout.setActiveItem(5);//跳转到check1
-								   	}
-								},
-								   {text:'查看汇总表',handler:function(){
-								   	   center.layout.setActiveItem(6);//跳转到check2
-								   	}}
-								]
-							})
+										{text:'查看原始表',handler:function(){	
+											   Ext.Ajax.request({
+												   url:"",
+												   params : {  
+											             action : "query"  
+										            },				              
+										            method : 'POST',  
+										            success : function(response) {
+										            	var treejson=response.responseText;
+										            }	
+											   });					   	
+										   	   center.layout.setActiveItem(5);//跳转到check1
+										   	}
+										},
+										   {text:'查看汇总表',handler:function(){
+											   Ext.Ajax.request({
+												   url:"",
+												   params : {  
+											             action : "query"  
+										            },				              
+										            method : 'POST',  
+										            success : function(response) {
+										            	var tree2json=response.responseText;
+										            }	
+											   });
+										   	   center.layout.setActiveItem(6);//跳转到check2
+										   	}}
+										]
+									})
 						}),					
 						Ext.create("Ext.button.Button",{
 							text:"审核新表",
@@ -63,8 +91,27 @@
 			  
 			  //logo	  
 	       var logopanel = Ext.create('Ext.panel.Panel', {
-	        items:[       
-	        ]   
+			layout:'absolute',
+			baseCls: 'my-panel-no-border',
+	        items:[ 
+				   {x:1150,y:50,xtype:'label',text: '当前用户：${session.acount.jobTitle}  ${session.acount.acountName}'},		
+				   Ext.create("Ext.button.Button",{
+					    x:1150,
+					    y:80,
+			   	        text:'退出',
+			   	        handler:function(){	
+			   	        	window.location.href="/test/Acount/logout";			   	        
+<%--				   	        Ext.Ajax.request({--%>
+<%--					   	        url:'/test/Acount/logout',--%>
+<%--					   	        method:'POST',--%>
+<%--							    success:function(response){--%>
+<%--							    	window.location.href="/test"								    --%>
+<%--								    alert('您已成功退出！')--%>
+<%--							    }--%>
+<%--					   	    })--%>
+				   	    }
+		   	        })
+	   	     ]   
 	      }); //logo结束
 	      
 	      
@@ -97,69 +144,41 @@
 
 
 				//选择填报表格页
+				<%--				var itemstore=Ext.create("Ext.data.Store",{--%>
+<%--					fields:['1','2'],--%>
+<%--				    proxy: {--%>
+<%--				        type: 'ajax',--%>
+<%--				        url: '/myExtjs/Hello/getgrids',--%>
+<%--				        reader: {--%>
+<%--				            type: 'json',--%>
+<%--					            root:'data'--%>
+<%--				        }--%>
+<%--				    }--%>
+<%--				});--%>
+               var gridslist=Ext.create("Ext.grid.Panel",{
+                   width:400,
+                   height:400,
+   	              columnLines:true,
+                  columns:[{text:'id',dataIndex:'id'},{text:'name',dataIndex:'name'}],
+                  store:[]
+                });
+				
 				var tianbao=Ext.create("Ext.panel.Panel",{
-					 //html:"tianbao",
-					 items:[
-					     {xtype:'text',text:'所有需要填报的表格：共两张'},
-					     {xtype:'button',text:'西安市房屋保障资金表',
-					     	 handler:function(){
-					     	 	Ext.Ajax.request({
-						 			    url: '/test/table/select/1',  
-					            params : {  
-						             action : "query"  
-					            },				              
-					            method : 'POST',  
-					            success : function(response) {				            	
-					            	  var str = response.responseText;
-					            	  //alert(str);
-						              var result=makeJson(str);
-													var editstore = Ext.create('Ext.data.Store', {  
-																	fields : result.fieldsNames,
-																	proxy:{
-																		type: 'ajax',  
-												                        url: '/test/table/select/1',
-																	//   writer:{
-																	//   	 type:'json'
-																	//   }
-																	  reader:{
-																	  	  type: 'json',
-																	      root:'data'
-																	  }						
-																	},
-																	autoLoad:true          
-													}); 
-						              //alert(result.data[0].proj_name);
-						              //alert(editstore.fields[0].name);
-						              //editstore.data=result.data;
-						              //alert(result.);
-						              
-						              
-						              //alert(result.fieldsNames[0].name);
-						              //alert(result.data);
-						              //alert(editstore.fields[0].name);
-					            	  /* var str = makeTextClean(response.responseText); 	
-					            	   //alert(str);				              
-						               editjson = Ext.JSON.decode(str); //获得后台传递json
-						               //alert(editjson.tabless.proj_name); 
-						               var colarr= new Array ();
-						               makeColumJson(editjson,colarr);
-						               var cols =makeJsonClean(colarr);
-						               alert(cols);
-						               var colsjson = Ext.JSON.decode(cols);
-						               editgrid.columns=cols;
-						               //editgrid.data=editjson.data; 
-						               //alert(editgrid.fields);
-						               //alert(editgrid.data);
-						               //alert(editjson.fieldsNames[0].name);  */
-						               
-						               Ext.getCmp("editgrid").reconfigure(editstore,result.columModle);  //定义grid的store和column   
-					            }  
-	                });	     	   	
-					     	   center.layout.setActiveItem(4);			     	   	
-					     	 }
-					     }			    
-					 ]
+					id:'tianbao',
+					items:[gridslist]
+					//items:itemstore
+<%--							Ext.create("Ext.data.JsonStore",{--%>
+<%--									proxy:{--%>
+<%--									       type: 'ajax',--%>
+<%--									       url: '/myExtjs/Hello/getgrids',--%>
+<%--									       reader: {--%>
+<%--									           type: 'json',--%>
+<%--									       }--%>
+<%--									}--%>
+<%--					         })--%>
+
 				});//选择填报表格页
+				
 				//填报具体表格
 			
 				var gridinf=Ext.create('Ext.panel.Panel',{
@@ -213,6 +232,7 @@
 					    		Ext.Ajax.request({
 						 			    url: '/test/table/save',  
 					            params :{
+						            id:'table3',
 						            a:str
 					            },  
 					           // jsonData:str,
@@ -501,10 +521,7 @@
 	</head>
 	<body>
 		<div class="userId">
-<%--	预期：	用此处来防止直接访问该界面，所有进入该界面的请求都应是从controller那通过授权转过来的，如果此处无法取到userId的值则转向登录界面。
-		实验结果：undo		
---%>
-			${userId}
+			<p>acount id:${session.acount.id}
 		</div> 
 	</body>
 </html>

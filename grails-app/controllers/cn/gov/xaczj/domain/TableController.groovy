@@ -14,7 +14,7 @@ import org.hibernate.*;
 
 import cn.gov.xaczj.*;
 import cn.gov.xaczj.domain.Table;
-
+import test.*;
 class TableController {
 	
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -56,9 +56,10 @@ class TableController {
 
 	}
     def save() {	
-		
+		num=params.numId;
+		def accountid = session.acount.id;
 		deleteall();
-		Session session = HibernateUtil.getInstance().getCurrentSession();	
+		Session hSession = HibernateUtil.getInstance().getCurrentSession();	
 		
 		Transaction tx =null;
 		
@@ -68,7 +69,7 @@ class TableController {
 			  def result = slurper.parseText(text);
 			  for(i in 0..result.size()-1)
 			  {			
-				  tx = session.beginTransaction();
+				  tx = hSession.beginTransaction();
 				  Table table = new Table();
 				  
 				  result.get(i).each
@@ -79,7 +80,7 @@ class TableController {
 						  if (aa!=null && aa!="" )
 						  {
 							  def tmp;
-							  def ta=tableList.get(0);
+							  def ta=tableList.get(num-1);
 							  def ina=ta.get(it.key);
 							  if(ina=="big_decimal")
 							  {
@@ -101,12 +102,12 @@ class TableController {
 						 }
 					  }					  			
 				 }
-				 table.setInChargeAcount();
-				 table.setInitFillAcount();
-				 table.setPlanTime();
-				 table.setInitFillTime();
-				 table.setInChargeAcount();
-				 Serializable id = session.save("table1",table);
+				 table.setInChargeAcount(accountid); //当前负责人
+				 table.setInitFillAcount(accountid); //初始填表人
+				 table.setPlanTime(PlanTime.findAllByAcountId(accountid));
+				 table.setInitFillTime(new Date().getTime());
+				 table.setStatus(1); //0是未提 1是已提
+				 Serializable id = hSession.save("table"+"${num}",table);
 //				 if ( i % 20 == 0 ) { //20, same as the JDBC batch size
 //					 //flush a batch of inserts and release memory:
 //					 session.flush();
@@ -143,29 +144,33 @@ class TableController {
 		println list1.toString();
 		
 		Session session = HibernateUtil.getInstance().getCurrentSession();		
-		Criteria criteria = session.createCriteria("table1");
+		Criteria criteria = session.createCriteria("table"+"${id+1}");
 		// criteria.add(Restrictions.eq(CustomizableEntityManager.CUSTOM_COMPONENT_NAME + ".dy_summoney", 232323));
 		criteria.setMaxResults(50);
 		List list = criteria.list();
 		def trlist=[];
-		for(i in 0..list.size()-1)
+		if(list.size != 0 )
 		{
-			Map sendmap = list.get(i).getProperties();
-			def mm=[:];
-			sendmap.each {
-				if(it.key.toString()=="id")
-					mm.put("id", it.value);
-				if(it.key.toString()=="name")
-					mm.put("name", it.value);
-				if(it.key.toString()=="customProperties")
-				{
-					it.value.each {
-					mm.put("${it.key}",it.value);
+			for(i in 0..list.size()-1)
+			{
+				Map sendmap = list.get(i).getProperties();
+				def mm=[:];
+				sendmap.each {
+					if(it.key.toString()=="id")
+						mm.put("id", it.value);
+					if(it.key.toString()=="name")
+						mm.put("name", it.value);
+					if(it.key.toString()=="customProperties")
+					{
+						it.value.each {
+						mm.put("${it.key}",it.value);
+						}
 					}
-				}		 
+				}
+				trlist.add(mm);
 			}
-			trlist.add(mm);
-		}						 
+		}
+								 
 		println trlist;	
 		render(contentType: "application/json",encoding: "gbk",model: map) {				
 			title = map;

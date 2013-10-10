@@ -12,8 +12,8 @@ class BootStrap {
 	def dynamic;
 	def tableList;
     def init = { servletContext ->
-				initCustomField();
-				//init();
+		//可临时注释掉，加快调试
+						initCustomField();
 		    }
     def destroy = {
     }
@@ -22,20 +22,19 @@ class BootStrap {
 	 * @brief 初始化数据库，定制数据库的列
 	 */
 	def initCustomField = {
-//		addFiledOBO();
 		
 		System.out.println("in boot strap");		
 		initXml();		
 		addFiledsOT();		
-		Session session = HibernateUtil.getInstance().getCurrentSession();
-				 Transaction tx = session.beginTransaction();
-				 try {
-		
-		
-				 } catch (Exception e) {
-					tx.rollback();
-					System.out.println("e = " + e);
-				 }
+//		Session session = HibernateUtil.getInstance().getCurrentSession();
+//				 Transaction tx = session.beginTransaction();
+//				 try {
+//		
+//		
+//				 } catch (Exception e) {
+//					tx.rollback();
+//					System.out.println("e = " + e);
+//				 }
 	  
   
 	}
@@ -93,8 +92,8 @@ class BootStrap {
 						}
 
 						property("column":"initFillTime","generated":"never","lazy":"false","name":"initFillTime","optimistic-lock":"true","type":"date","unique":"false")
-						property("column":"initFillAcount","generated":"never","lazy":"false","name":"initFillAcount","optimistic-lock":"true","type":"integer","unique":"false")
-						property("column":"inChargeAcount","generated":"never","lazy":"false","name":"inChargeAcount","optimistic-lock":"true","type":"integer","unique":"false")
+						property("column":"initFillAcount","name":"initFillAcount","optimistic-lock":"true")
+						property("column":"inChargeAcount","name":"inChargeAcount","optimistic-lock":"true")
 						property("column":"status","generated":"never","lazy":"false","name":"status","optimistic-lock":"true","type":"short","unique":"false")
 						property("column":"planTime","generated":"never","lazy":"false","name":"planTime","optimistic-lock":"true","type":"date","unique":"false")
 						"dynamic-component"("insert":"true","name":"customProperties","optimistic-lock":"true","unique":"false","update":"true"){}

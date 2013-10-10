@@ -2,8 +2,9 @@ package test
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class RegistrationController {
+class RegistrationController extends BaseAdminController {
 
+	def beforeInterceptor = [action:this.&adminAuth];
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {

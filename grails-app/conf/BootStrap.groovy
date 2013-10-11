@@ -12,8 +12,8 @@ class BootStrap {
 	def dynamic;
 	def tableList;
     def init = { servletContext ->
-		//可临时注释掉，加快调试
-						initCustomField();
+		//可临时注释掉，加快调试		
+					initCustomField();
 		    }
     def destroy = {
     }

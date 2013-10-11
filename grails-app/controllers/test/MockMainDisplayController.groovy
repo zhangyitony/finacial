@@ -1,6 +1,7 @@
 package test
 
 import grails.converters.JSON
+import java.util.Date
 import org.springframework.dao.DataIntegrityViolationException
 
 class MockMainDisplayController {
@@ -23,8 +24,16 @@ class MockMainDisplayController {
 		     Form as f \
 		where p.tableId = f.no and p.acountId = ?", [(int)loginAcount.id])
 //TODO:	将results按协议组成有效json；	
-		println results;
-		render results as JSON;
+		def map=[:];
+		for(i in 0..results.size()-1)
+		{
+			def ss = results.get(i);
+			println ss[0].tableId;
+			println ss[1].name;
+			map.putAt("${ss[0].tableId}",ss[1].name)
+		}
+		
+		render map as JSON;
 	}
 	
 	private auth(){

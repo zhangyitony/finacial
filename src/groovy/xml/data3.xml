@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName= "social_rent_fund" chTableName="西安市社会租赁公租房资金收支情况表" identifier ="table3" cycle="3">
+		<params name ="customFileds" >
+			<param name ="town_name" value ="区县名称" type = "string"></param>
+			<param name ="year_of_surplus" value="年初资金结余合计">
+				<param name ="yos_sum" value="合计" type="big_decimal"></param>
+				<param name="yos_finance" value="区县财政结余" type="big_decimal"></param>
+				<param name="yos_housemanage" value="区县房管结余" type="big_decimal"></param>
+			</param>
+			<param name ="this_year_rent_resource" value="本年社会租赁公租房补助资金来源">
+				<param name ="tyrr_sum" value="合计" type="big_decimal"></param>
+				<param name ="tyrr_central_finance" value="中央财政" type="big_decimal"></param>
+				<param name ="tyrr_province_finance" value="省财政" type="big_decimal"></param>
+				<param name ="tyrr_city_finance" value="市财政" type="big_decimal"></param>
+				<param name ="tyrr_town_finance" value="区县财政" type="big_decimal"></param>
+			</param>
+			<param name ="number_town_finance_department" value="区县财政拨入房管管部门数" type="integer"></param>
+			<param name ="cost_housemanage" value="房管部门拨付租赁户支出" type="big_decimal"></param>
+			<param name ="final_fund_surplus" value="期末累计资金结余" type="big_decimal"></param>
+			<param name ="town_finance_surplus" value="区县财政结余" type="big_decimal"></param>
+			<param name ="town_housemanage_surpus" value="区县房管结余" type="big_decimal"></param>
+			<param name ="comment" value ="备注" type="string"></param>
+		</params>
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>
+	</table>

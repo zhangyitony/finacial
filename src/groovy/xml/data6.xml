@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName= "social_rent_fund" chTableName="西安市廉租住房建设财政投资补充资料表" identifier ="table6" cycle="3">
+		<params name =	"customFileds">
+			<param name ="year" value="年度" type="string"></param>
+			<param name ="sum" value="合计" type="big_decimal"></param>
+			<param name ="central_investment" value="中央投资">
+				<param name="ci_province_filenum" value="省文件号" type="string"></param>
+				<param name="ci_city_filenum" value="市文件号" type="string"></param>
+				<param name="ci_money" value="金额" type="big_decimal"></param>
+			</param>
+			<param name="province_investment" value="省投资">
+				<param name="pi_province_filenum" value="省文件号" type="string"></param>
+				<param name="pi_city_filenum" value="市文件号" type="string"></param>
+				<param name="pi_money" value="金额" type="string"></param>
+			</param>
+			<param name="city_investment" value="市投资">
+				<param name="ci_composite_invest" value="市投资（综合）">
+					<param name ="cici_city_filenum" value="市文件号" type="string"></param>
+					<param name ="cici_money" value="金额" type="big_decimal"></param>
+				</param>
+				<param name="ci_other_invest" value="市投资（其他）">
+					<param name="cioi_city_filenum" value="市文件号" type="string"></param>
+					<param name="cioi_money" value="金额" type="string"></param>
+				</param>
+			</param>
+			<param name="town_investment" value="区县投资">
+				<param name="ti_filenum" value="文件号" type="string"></param>
+				<param name="ti_money" value="金额" type="string"></param>
+			</param>
+			<param name="comment" value="备注" type="string"></param>
+
+		</params>
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>		
+	</table>

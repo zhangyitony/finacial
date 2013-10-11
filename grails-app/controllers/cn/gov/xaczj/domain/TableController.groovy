@@ -16,15 +16,15 @@ import cn.gov.xaczj.*;
 import cn.gov.xaczj.domain.Table;
 import test.*;
 class TableController {
-	
+	def beforeInterceptor = [action:this.&auth];
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	def dynamic;
 	def tableList;
 	
-	def searchtype(String name)
+	def searchtype(String name,int i)
 	{
 //			
-		def table=tableList.get(0);
+		def table=tableList.get(i);
 		if (table.get(name)=="big_decimal")
 			return "java.math.BigDecimal";
 		else if (name=="id")
@@ -33,7 +33,7 @@ class TableController {
 			return "java.lang."+table.get(name);
 	}
 	
-	def deleteall()
+	def deleteall(int i)
 	{
 
 		Session session = HibernateUtil.getInstance().getCurrentSession();			
@@ -41,7 +41,8 @@ class TableController {
 		try {		
 		tx = session.beginTransaction();
 			
-		String hql = "delete table1 where id != 99"		
+		String hql = "delete table"+"${i}"+" where id != 99"
+		println hql;		
 		Query query = session.createQuery(hql);;		
 		int count  = query.executeUpdate();		
 		 tx.commit();		
@@ -56,9 +57,10 @@ class TableController {
 
 	}
     def save() {	
-		num=params.numId;
-		def accountid = session.acount.id;
-		deleteall();
+		int num=Integer.parseInt(params.numfuckId);
+		// num=params.numfuckId;
+		int accountid = session.acount.id;
+		deleteall(num);
 		Session hSession = HibernateUtil.getInstance().getCurrentSession();	
 		
 		Transaction tx =null;
@@ -104,9 +106,9 @@ class TableController {
 				 }
 				 table.setInChargeAcount(accountid); //当前负责人
 				 table.setInitFillAcount(accountid); //初始填表人
-				 table.setPlanTime(PlanTime.findAllByAcountId(accountid));
-				 table.setInitFillTime(new Date().getTime());
-				 table.setStatus(1); //0是未提 1是已提
+			//	 table.setPlanTime(PlanTime.findByAcountId(accountid));
+				 table.setInitFillTime(new Date());
+				 table.setStatus((short)1); //0是未提 1是已提
 				 Serializable id = hSession.save("table"+"${num}",table);
 //				 if ( i % 20 == 0 ) { //20, same as the JDBC batch size
 //					 //flush a batch of inserts and release memory:
@@ -251,6 +253,13 @@ class TableController {
 			ll.add(map);
 		}
 		return ll
+	}
+	private auth(){
+		println("in the auth");
+		if(!session.acount){
+			redirect(url:'/index.gsp')
+			return false
+		}
 	}
 		
 }

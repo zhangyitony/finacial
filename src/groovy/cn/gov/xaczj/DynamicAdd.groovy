@@ -25,7 +25,7 @@ class DynamicAdd {
 				namemap.putAt("tableName",doc.attribute("identifier"));
 				namemap.putAt("chTableName",,doc.attribute("chTableName"));				
 				tableDy.entityName = namemap;
-				
+				tableDy.cycle= doc.attribute("cycle")
 				String tableId = doc.attribute("identifier");
 				if(tableId == null){
 					throw new Exception("missing table id ");

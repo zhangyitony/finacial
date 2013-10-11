@@ -77,20 +77,9 @@
 		                     }
 		                  ]
 		              })   
-<%--		              var viewport=new Ext.Viewport({--%>
-<%--		            	  layout: {--%>
-<%--		            		  align: 'middle',--%>
-<%--		            		  pack: 'center',--%>
-<%--		            		  type: 'hbox'--%>
-<%--		            		},--%>
-<%--		            		bodyStyle:{background:'#dae7f6'},--%>
-<%--		            	  items:[main]--%>
-<%--		            	});	--%>
-	            	  var back=Ext.create("Ext.panel.Panel",{
-	            		  bodyStyle:{background:'#dae7f6'},
-	            		  width:document.body.scrollWidth,
-		            	  height:document.body.scrollHeight,
-		            	  renderTo:Ext.getBody(),
+
+	            	  var back=Ext.create("Ext.Viewport",{
+	            		     bodyStyle:{background:'#dae7f6'},
   		            	  layout: {
   		            		  align: 'middle',
   		            		  pack: 'center',
@@ -105,8 +94,6 @@
 
 		</script> 
 	</head>
-	<body>
-	
-	
+    <body bgcolor="#dae7f6">
 	</body>
 </html>

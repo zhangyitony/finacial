@@ -1,3 +1,5 @@
+/grails
+/org
 /cn
 /ApplicationResources$_run_closure1.class
 /ApplicationResources$_run_closure1_closure2.class
@@ -34,6 +36,17 @@
 /DataSource$_run_closure3_closure6_closure9.class
 /DataSource$_run_closure3_closure6_closure9_closure10.class
 /DataSource.class
+/DbdocUrlMappings$__clinit__closure1.class
+/DbdocUrlMappings.class
+/DefaultCacheConfig$_run_closure1.class
+/DefaultCacheConfig$_run_closure1_closure2.class
+/DefaultCacheConfig$_run_closure1_closure3.class
+/DefaultCacheConfig.class
+/DefaultWebXmlConfig$_run_closure1.class
+/DefaultWebXmlConfig.class
+/ResourcesBootStrap$_closure1.class
+/ResourcesBootStrap$_closure2.class
+/ResourcesBootStrap.class
 /UrlMappings$__clinit__closure1.class
 /UrlMappings$__clinit__closure1_closure2.class
 /UrlMappings$__clinit__closure1_closure2_closure3.class
@@ -43,3 +56,4 @@
 /resources$_run_closure1_closure3.class
 /resources.class
 /test
+/xml

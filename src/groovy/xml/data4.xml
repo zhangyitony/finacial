@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName="investresource_lowprice_rent" chTableName="西安市廉租住房建设项目投资来源基本情况统计表" identifier="table4" cycle="3">
+	<params name =	"customFileds">
+		<param name = "proj_name" value="项目名称" type="string" ></param>
+		<param name = "year" value="年度" type="integer"></param>
+		<param name = "plan_finance_fund" value="财政资金支出预算" >
+			<param name = "pff_sum" value ="合计" type ="big_decimal"></param>
+			<param name = "pff_center" value ="中央" type ="big_decimal"></param>
+			<param name = "pff_province" value ="省" type ="big_decimal"></param>
+			<param name = "pff_city" value ="县" type ="big_decimal"></param>
+		</param>
+		<param name ="sum_investresource" value ="投资来源合计" type ="big_decimal"></param>
+		<param name ="number_construct" value ="财政资金实际拨入建设单位数" >
+			<param name ="nc_sum" value ="合计" type = "big_decimal"></param>
+			<param name ="nc_center" value = "中央" type ="big_decimal"></param>
+			<param name ="nc_province" value ="省" type ="big_decimal"></param>
+			<param name ="nc_city" value ="市" type ="big_decimal"></param>
+			<param name ="nc_town" value ="区县" type ="big_decimal"></param>
+		</param>
+		<param name ="others_investment" value ="其它投资">
+			<param name ="oi_sum" value ="合计" type ="big_decimal"></param>
+			<param name ="oi_borrw" value ="当年银行借款" type = "big_decimal"></param>
+			<param name ="oi_return" value ="当年还款" type ="big_decimal"></param>
+			<param name ="oi_surplus" value ="期末银行余额" type ="big_decimal"></param> 
+			<param name ="oi_others" value = "其它资金" type ="big_decimal"></param>
+		</param>
+		<param name ="construction_company" value ="拨付代建单位">
+			<param name ="cc_sum" value="总额" type="big_decimal"></param>
+			<param name ="cc_finance_fund" value ="财政资金" type="big_decimal"></param>
+		</param>
+		<param name ="surplus_final_construction_fund" value = "期末建设单位资金结余">
+			<param name ="sfcf_sum" value="总额" type = "big_decimal"></param>
+			<param name ="sfcf_fund" value="财政资金" type ="big_decimal"></param>
+		</param>
+		<param name ="fund_accumulative" value ="累计拨付施工单位资金" type="big_decimal"></param>
+		<param name ="comment" value ="备注" type="string"></param>
+	</params>
+
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>
+	</table>

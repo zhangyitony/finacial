@@ -1,9 +1,9 @@
 /*
-	函数作用：
-	从后台JSON文件中获得列的JSON数组
-	参数: 
-	json:后台发送的json文件
-	arr :Array类型，初始值为空
+	锟斤拷锟斤拷锟斤拷锟矫ｏ拷
+	锟接猴拷台JSON锟侥硷拷锟叫伙拷锟斤拷械锟絁SON锟斤拷锟斤拷
+	锟斤拷锟斤拷: 
+	json:锟斤拷台锟斤拷锟酵碉拷json锟侥硷拷
+	arr :Array锟斤拷锟酵ｏ拷锟斤拷始值为锟斤拷
 */
 
 function makeTextClean(str){
@@ -33,9 +33,9 @@ function makeTextClean(str){
 		}
 	}		
 	/*
-	参数: 
-	json:后台发送的json文件
-	arr :Array类型，初始值为空
+	锟斤拷锟斤拷: 
+	json:锟斤拷台锟斤拷锟酵碉拷json锟侥硷拷
+	arr :Array锟斤拷锟酵ｏ拷锟斤拷始值为锟斤拷
 	*/
 	function makeFieldsJson(json,arr){
 		for(var i in json){
@@ -58,9 +58,10 @@ function makeTextClean(str){
 		str = str.replace(/\[,/g,"[");
 		str = str.replace(/\]},/g,"]}");
 		str = str.replace(/},\]/g,"}]");
+		str = str.replace(/}{/g,"},{");
 		return str;
 	}
-	/*做测试*/
+	/*锟斤拷锟斤拷锟斤拷*/
 	function testFun(json){
 		for(var i in json) {
 			document.write(i+":"+json[i]+"</br>");
@@ -69,7 +70,7 @@ function makeTextClean(str){
 			}
 		}
 	}
-		
+
 	function makeJson(str){
 			var sendJson = Ext.JSON.decode(str);
 			var temp={};
@@ -99,22 +100,4 @@ function makeTextClean(str){
 			sendJson.fieldsNames = fieldJson.fieldsNames;
 			
 			return sendJson;
-	}	
-
-	
-
-/*
-* 使用实例，
-* 由于JavaScript的面向对象编程掌握的不好，代码看起来不是很干净，只能先这样用着了。
-			success : function(response) {
-					var str = response.responseText;
-					var result=makeJson(str);
-					//str=unescape(str.replace(/\\/g, "%")) //Unicode 2 Chinese
-					
-					var store = Ext.create('Ext.data.Store', {  
-						fields : result.fields.fieldsNames//把json的fieldsNames赋给fields  
-						//data : json.data          //把json的data赋给data  
-					})   
-					Ext.getCmp("configGrid").reconfigure(store, result.cols.columModle);  //定义grid的store和column  
-			}  
-*/		
+	}

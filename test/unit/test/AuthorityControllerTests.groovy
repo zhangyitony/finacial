@@ -4,7 +4,6 @@ package test
 
 import org.junit.*
 import grails.test.mixin.*
-import test.*
 
 @TestFor(AuthorityController)
 @Mock(Authority)
@@ -13,9 +12,7 @@ class AuthorityControllerTests {
     def populateValidParams(params) {
         assert params != null
         // TODO: Populate valid properties like...
-        params["authority"] = '可写'
-		Form.params["id"] = '1'
-		Acount.params["User"] = '1'
+        //params["name"] = 'someValidName'
     }
 
     void testIndex() {
@@ -105,7 +102,7 @@ class AuthorityControllerTests {
         // test invalid parameters in update
         params.id = authority.id
         //TODO: add invalid values to params object
-		params.authority = null
+
         controller.update()
 
         assert view == "/authority/edit"

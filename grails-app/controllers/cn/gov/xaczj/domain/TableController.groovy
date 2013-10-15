@@ -4,120 +4,168 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.LinkedHashMap.Entry
 import org.springframework.dao.DataIntegrityViolationException
-import cn.gov.xaczj.TableDynamic
 import grails.converters.*
 import java.util.Map.Entry
 import groovy.json.*
-
-
 import org.hibernate.*;
-
 import cn.gov.xaczj.*;
-import cn.gov.xaczj.domain.Table;
 import test.*;
+
 class TableController {
 	def beforeInterceptor = [action:this.&auth];
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	def dynamic;
 	def tableList;
 	
-	def searchtype(String name,int i)
-	{
-//			
-		def table=tableList.get(i);
-		if (table.get(name)=="big_decimal")
-			return "java.math.BigDecimal";
-		else if (name=="id")
-			return "java.lang.integer"
-		else		
-			return "java.lang."+table.get(name);
-	}
-	
-	def deleteall(int i)
+	def delete(int i,String num)
 	{
 
-		Session session = HibernateUtil.getInstance().getCurrentSession();			
-		Transaction tx = null;		
+		HibernateUtil.getInstance().getCurrentSession();
+		Transaction tx = null;	
+		int count;
 		try {		
-		tx = session.beginTransaction();
+		tx = HibernateUtil.getInstance().getCurrentSession().beginTransaction();
 			
-		String hql = "delete table"+"${i}"+" where id != 99"
+		String hql = "delete table"+"${i}"+" where id = ${num}"
 		println hql;		
-		Query query = session.createQuery(hql);;		
-		int count  = query.executeUpdate();		
-		 tx.commit();		
-		System.out.println("delete count : " + count); //删除条数		
+		Query query = HibernateUtil.getInstance().getCurrentSession().createQuery(hql);;		
+		count  = query.executeUpdate();		
+		tx.commit();		
+	//	HibernateUtil.getInstance().reset();
 		} catch (Exception e) {	
-		println e;	
+			println e;	
 		
 		} finally {		
-		System.out.println("delete count : " + count); //删除条数
+			System.out.println("delete count : " + count); //删除条数
+			
 		}
 		
 
 	}
+	/**
+	 * 
+	 * @return
+	 */
     def save() {	
-		int num=Integer.parseInt(params.numfuckId);
+		int formNum=Integer.parseInt(params.numFuckId);
 		// num=params.numfuckId;
 		int accountid = session.acount.id;
-		deleteall(num);
-		Session hSession = HibernateUtil.getInstance().getCurrentSession();	
-		
+		def delNums = params.del_rows;
+		def commit = params.commit;
+		if (delNums!=null)
+		{
+			println delNums.size();
+				for(i in 0..delNums.size()-1)
+				{
+					if(delNums[i]!="ss" && delNums[i]!='s')
+					{
+						println "deleteid："+delNums[i];
+						delete(formNum,delNums[i]);
+					}				
+				}	
+		}	
+		HibernateUtil.getInstance().getCurrentSession();		
 		Transaction tx =null;
-		
+
 		try {
-			  def text=params.a;			
+			  def text=params.data_rows;			
 			  def slurper = new JsonSlurper()		  			
 			  def result = slurper.parseText(text);
+			  Table table = null;
 			  for(i in 0..result.size()-1)
-			  {			
-				  tx = hSession.beginTransaction();
-				  Table table = new Table();
-				  
+			  {//遍历每一条表记录			
+				  tx = HibernateUtil.getInstance().getCurrentSession().beginTransaction();
+				  table = new Table();			  
 				  result.get(i).each
-				  {
-					  if(it.key!="id")
-					  {
-						  String aa = it.value;
-						  if (aa!=null && aa!="" )
-						  {
-							  def tmp;
-							  def ta=tableList.get(num-1);
-							  def ina=ta.get(it.key);
-							  if(ina=="big_decimal")
-							  {
-								 Class c = Class.forName("java.math.BigDecimal");
-								 tmp = c.newInstance(it.value);
-							  }
-							  else if(ina=="string")
-							  {															
-								 tmp = it.value;
-							  }
-							  else if(ina=="integer")
+				  {//遍历一条记录中的每项数据
+					  if (result.get(i).containsKey("id")==true)
+					  {//更新数据 						 
+						  table = (Table)HibernateUtil.getInstance().getCurrentSession().load("table"+"${formNum}", result.get(i).getAt("id"));						
+						  if(it.key!="id")
+						  {//记录中的id号不需要更新
+							  
+							  String dataValue = it.value;
+							  if (dataValue!=null && dataValue!="" )
+							  {								
+								  def tmp;
+								  def ta=tableList.get(formNum-1);
+								  def dataType=ta.get(it.key);
+								  if(dataType=="big_decimal")
+								  {
+									 tmp = Class.forName("java.math.BigDecimal").newInstance(it.value);
+								  }
+								  else if(dataType=="string")
+								  {
+									 tmp = it.value;
+								  }
+								  else if(dataType=="integer")
+								  {
+									 tmp = Class.forName("java.lang.Integer").newInstance(it.value);
+								  }
+								  println tmp;							
+								  table.setValueOfCustomField(it.key,tmp);								
+							 }
+						  }
+						  if(commit){
+							  //提交表格时更改该条数据的接受者为该条记录的当前负责人的上级的帐号id
+							  table.receiveAcount = Acount.get(table.inChargeAcount).parentAcount;
+						  }
+						  HibernateUtil.getInstance().getCurrentSession().flush();//*/
+					  }
+					  else 
+					  {//插入新的数据记录		
+						  //convert(table)
+						   if(it.key!="id")
+						  {//记录中应该无key为id的数据，此处判断多余，需要张验证，如果多余请去除。
+							  
+							  String aa = it.value;
+							  if (aa!=null && aa!="" )
 							  {
 								 
-								 Class c = Class.forName("java.lang.Integer");
-								 tmp = c.newInstance(it.value);
-							  }
-							  println tmp;
-							  table.setValueOfCustomField(it.key,tmp);
-						 }
-					  }					  			
+								  def tmp;
+								  def ta=tableList.get(formNum-1);
+								  def ina=ta.get(it.key);
+								  if(ina=="big_decimal")
+								  {
+									 Class c = Class.forName("java.math.BigDecimal");
+									 tmp = c.newInstance(it.value);
+								  }
+								  else if(ina=="string")
+								  {
+									 tmp = it.value;
+								  }
+								  else if(ina=="integer")
+								  {
+									 
+									 Class c = Class.forName("java.lang.Integer");
+									 tmp = c.newInstance(it.value);
+								  }
+								  println tmp;
+								//  convert(it,num,tmp);
+								  table.setValueOfCustomField(it.key,tmp);
+								  table.setInChargeAcount(accountid); //当前负责人
+								  table.setInitFillAcount(accountid); //初始填表人
+								  def time = PlanTime.findByAcountId(accountid).planTime;
+								  table.setPlanTime(time);
+								  table.setInitFillTime(new Date());
+								  table.setStatus((short)1); //0是未提 1是已提
+								  if(commit){
+									  table.setReceiveAcount(session.acount.parentAcount);//上报表格，存入当前登录帐号的上级单位的的帐号
+								  }else{
+								  	  table.setReceiveAcount(accountid);//存草表时，存入自己的帐号
+								  }
+								 
+								  Serializable id = HibernateUtil.getInstance().getCurrentSession().save("table"+"${formNum}",table);
+							 }
+						  }
+					  }
+					  				  			
 				 }
-				 table.setInChargeAcount(accountid); //当前负责人
-				 table.setInitFillAcount(accountid); //初始填表人
-			//	 table.setPlanTime(PlanTime.findByAcountId(accountid));
-				 table.setInitFillTime(new Date());
-				 table.setStatus((short)1); //0是未提 1是已提
-				 Serializable id = hSession.save("table"+"${num}",table);
-//				 if ( i % 20 == 0 ) { //20, same as the JDBC batch size
-//					 //flush a batch of inserts and release memory:
-//					 session.flush();
-//					 session.clear();
-//				 }
+				
 				 tx.commit();
+			//	 HibernateUtil.getInstance().reset();
 				 def tmp = [success:true];
-				render tmp as JSON;
+				 render tmp as JSON;
 			 }
 			 	
 			  } catch (Exception e) {
@@ -126,28 +174,27 @@ class TableController {
 					  def tmp = [success:false];
 					  render tmp as JSON;
 			  }
+			  
+			
 	}
 	
 
 	
 	def select(Long id)
 	{
-		def tableList = dynamic.getTableList()
-		//render(view: "hello", model: [userInstance: user,roleInstance:role,registrationInstance:registration,authorityInstance:authority])
-		id=id-1;
-		TableDynamic td = tableList.get((int)id);
+		id--;
+		def typeList = tableList.get((int)id);
+		def tableDyList = dynamic.getTableList();
+		
+		TableDynamic td = tableDyList.get((int)id);
 		def map=td.entityName;
 		Expando table = td.table;
-		def tmap = table.getProperties();
-//		tmap.get("investgatePlan");
-	
+		def tmap = table.getProperties();	
 		def list1 =change(table);
 		def listend = change2(list1);
-		println list1.toString();
-		
-		Session session = HibernateUtil.getInstance().getCurrentSession();		
-		Criteria criteria = session.createCriteria("table"+"${id+1}");
-		// criteria.add(Restrictions.eq(CustomizableEntityManager.CUSTOM_COMPONENT_NAME + ".dy_summoney", 232323));
+		println list1.toString();		
+		HibernateUtil.getInstance().getCurrentSession();		
+		Criteria criteria = HibernateUtil.getInstance().getCurrentSession().createCriteria("table"+"${id+1}");
 		criteria.setMaxResults(50);
 		List list = criteria.list();
 		def trlist=[];
@@ -172,15 +219,16 @@ class TableController {
 				trlist.add(mm);
 			}
 		}
-								 
+	//	HibernateUtil.getInstance().reset();
 		println trlist;	
 		render(contentType: "application/json",encoding: "gbk",model: map) {				
 			title = map;
 			columModle = listend;
 			data = trlist;
-		}
-		
+			type = typeList;
+		}	
 	}
+
 	List change(table)
 	{
 		def tmap = table.getProperties();

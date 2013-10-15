@@ -26,13 +26,9 @@
 					
 						<g:sortableColumn property="acountName" title="${message(code: 'acount.acountName.label', default: 'Acount Name')}" />
 					
-						<g:sortableColumn property="jobTitle" title="${message(code: 'acount.jobTitle.label', default: 'Job Title')}" />
-					
 						<g:sortableColumn property="parentAcount" title="${message(code: 'acount.parentAcount.label', default: 'Parent Acount')}" />
 					
 						<g:sortableColumn property="password" title="${message(code: 'acount.password.label', default: 'Password')}" />
-					
-						<th><g:message code="acount.role.label" default="Role" /></th>
 					
 					</tr>
 				</thead>
@@ -42,13 +38,9 @@
 					
 						<td><g:link action="show" id="${acountInstance.id}">${fieldValue(bean: acountInstance, field: "acountName")}</g:link></td>
 					
-						<td>${fieldValue(bean: acountInstance, field: "jobTitle")}</td>
-					
 						<td>${fieldValue(bean: acountInstance, field: "parentAcount")}</td>
 					
 						<td>${fieldValue(bean: acountInstance, field: "password")}</td>
-					
-						<td>${fieldValue(bean: acountInstance, field: "role")}</td>
 					
 					</tr>
 				</g:each>

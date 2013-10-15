@@ -3,141 +3,128 @@ package test
 import grails.converters.JSON
 import java.util.Date
 import org.springframework.dao.DataIntegrityViolationException
+import cn.gov.xaczj.*;
 
 class MockMainDisplayController {
 	
 	def beforeInterceptor = [action:this.&auth];
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST", getPost:"POST"]
+	
+	def dynamic;
+	
 	def showMain(){
-		//鏂规硶鎵ц瀹屾瘯鍚庝細灏濊瘯杩涘叆-first->showMain.jsp -then->showMain.gsp,璁ㄨ涓婚〉闈㈡槸鍚﹂渶瑕佹敼鍚嶇О锛堬紵锛夈�
 		
 	}
 	
+	def choosePost(){
+		def posts = Post.findAllByAcount(Acount.get(session.acount.id));
+		println(posts);
+		[postList: posts]
+		
+	}
+	
+	def setAcountPost(){
+		println("in setAcountPost");
+		println("params"+params);
+		session.acountPost = Post.findByPostName(params.select);
+		println(session.acountPost);
+		redirect(action:"showMain");
+	}
+	
+
+	
+	/**
+	 * get should-filled form info,return as json format.
+	 * @return json data
+	 */
 	def getShouldFillTables(){
-		Acount loginAcount = session.acount;
-//		def temp = PlanTime.findByAcountId(loginAcount.id);
-//		def aa = Form.get(temp.tableId);
-//		
+		Post loginPost = session.acountPost;
 		def results = PlanTime.findAll("\
 		from PlanTime as p, \
 		     Form as f \
-		where p.tableId = f.no and p.acountId = ?", [(int)loginAcount.id])
-//TODO:	将results按协议组成有效json；	
-		def map=[:];
-		for(i in 0..results.size()-1)
+		where p.tableId = f.no and p.postId = ?", [(int)loginPost.id])
+
+		def tableList = dynamic.getTableList()		
+		def tablelist=[];
+		HashMap map = null;//store a table's data
+		def ss;
+		TableDynamic td;
+		int cycle;//should fill time cycle
+		int month;
+		int num;
+		String timeStr = "";//formated time string.
+		if(results.size()>0)
 		{
-			def ss = results.get(i);
-			println ss[0].tableId;
-			println ss[1].name;
-			map.putAt("${ss[0].tableId}",ss[1].name)
+			for(i in 0..results.size()-1)
+			{
+				 map=[:];
+				 ss = results.get(i);
+				 td = tableList.get(ss[0].tableId-1);
+				 cycle = Integer.parseInt(td.cycle);
+				 month = Integer.parseInt(ss[0].planTime.format('MM'));
+				 timeStr = "";
+				 if (cycle!=0)
+				 {
+					 num = month/cycle;
+				 }
+				
+				 
+				 switch(cycle){
+					 case 6:
+							 if(num==0)
+								 timeStr = "上半年";
+							 else if(num==1)
+								 timeStr = "下半年"
+							 timeStr = ss[0].planTime.format('yyyy年')+"${timeStr}"
+					 break;
+					 case 3:
+					 		switch(num){
+					 		 case 0:timeStr = "第一季度";break;
+							 case 1:timeStr = "第二季度";break;
+							 case 2:timeStr = "第三季度";break;
+							 case 3:timeStr = "第四季度";break;
+							 }
+						 timeStr = ss[0].planTime.format('yyyy年')+"${timeStr}"
+					 break;
+					 case 1:
+					 		timeStr = ss[0].planTime.format('yyyy年/MMM')
+					 break;
+					 case 0:
+					 		timeStr = "";	
+					 break;
+				 }
+				map.putAt("id",ss[0].id)
+				map.putAt("tableId",ss[0].tableId)
+				map.putAt("name",ss[1].name)
+				map.putAt("time",timeStr)
+				
+				tablelist.add(map);
+			}
 		}
 		
-		render map as JSON;
+		
+//		println tablelist;
+		render tablelist as JSON;
 	}
+	
+	
 	
 	private auth(){
 		println("in the auth");
-		if(!session.acount){
+		if( !session.acount ||session.acount?.acountName.equals("admin")){
+			println("auth failed or session is timeout");
 			redirect(url:'/index.gsp')
 			return false
 		}
+//		else if(session.acount?.acountName.equals("admin")){
+//			println("admin should not get into commit system");
+//			redirect(url:'/index.gsp')
+//			return false
+//		}
+		
+		println("auth passed");
 	}
 	
 	
 	
-	
-//    def index() {
-//        redirect(action: "list", params: params)
-//    }
-//
-//    def list(Integer max) {
-//        params.max = Math.min(max ?: 10, 100)
-//        [mockMainDisplayInstanceList: MockMainDisplay.list(params), mockMainDisplayInstanceTotal: MockMainDisplay.count()]
-//    }
-//
-//    def create() {
-//        [mockMainDisplayInstance: new MockMainDisplay(params)]
-//    }
-//
-//    def save() {
-//        def mockMainDisplayInstance = new MockMainDisplay(params)
-//        if (!mockMainDisplayInstance.save(flush: true)) {
-//            render(view: "create", model: [mockMainDisplayInstance: mockMainDisplayInstance])
-//            return
-//        }
-//
-//        flash.message = message(code: 'default.created.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), mockMainDisplayInstance.id])
-//        redirect(action: "show", id: mockMainDisplayInstance.id)
-//    }
-//
-//    def show(Long id) {
-//        def mockMainDisplayInstance = MockMainDisplay.get(id)
-//        if (!mockMainDisplayInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), id])
-//            redirect(action: "list")
-//            return
-//        }
-//
-//        [mockMainDisplayInstance: mockMainDisplayInstance]
-//    }
-//
-//    def edit(Long id) {
-//        def mockMainDisplayInstance = MockMainDisplay.get(id)
-//        if (!mockMainDisplayInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), id])
-//            redirect(action: "list")
-//            return
-//        }
-//
-//        [mockMainDisplayInstance: mockMainDisplayInstance]
-//    }
-//
-//    def update(Long id, Long version) {
-//        def mockMainDisplayInstance = MockMainDisplay.get(id)
-//        if (!mockMainDisplayInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), id])
-//            redirect(action: "list")
-//            return
-//        }
-//
-//        if (version != null) {
-//            if (mockMainDisplayInstance.version > version) {
-//                mockMainDisplayInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-//                          [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay')] as Object[],
-//                          "Another user has updated this MockMainDisplay while you were editing")
-//                render(view: "edit", model: [mockMainDisplayInstance: mockMainDisplayInstance])
-//                return
-//            }
-//        }
-//
-//        mockMainDisplayInstance.properties = params
-//
-//        if (!mockMainDisplayInstance.save(flush: true)) {
-//            render(view: "edit", model: [mockMainDisplayInstance: mockMainDisplayInstance])
-//            return
-//        }
-//
-//        flash.message = message(code: 'default.updated.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), mockMainDisplayInstance.id])
-//        redirect(action: "show", id: mockMainDisplayInstance.id)
-//    }
-//
-//    def delete(Long id) {
-//        def mockMainDisplayInstance = MockMainDisplay.get(id)
-//        if (!mockMainDisplayInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), id])
-//            redirect(action: "list")
-//            return
-//        }
-//
-//        try {
-//            mockMainDisplayInstance.delete(flush: true)
-//            flash.message = message(code: 'default.deleted.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), id])
-//            redirect(action: "list")
-//        }
-//        catch (DataIntegrityViolationException e) {
-//            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'mockMainDisplay.label', default: 'MockMainDisplay'), id])
-//            redirect(action: "show", id: id)
-//        }
-//    }
 }

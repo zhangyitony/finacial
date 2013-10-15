@@ -23,15 +23,6 @@
 			</g:if>
 			<ol class="property-list authority">
 			
-				<g:if test="${authorityInstance?.acount}">
-				<li class="fieldcontain">
-					<span id="acount-label" class="property-label"><g:message code="authority.acount.label" default="Acount" /></span>
-					
-						<span class="property-value" aria-labelledby="acount-label"><g:link controller="acount" action="show" id="${authorityInstance?.acount?.id}">${authorityInstance?.acount?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${authorityInstance?.authority}">
 				<li class="fieldcontain">
 					<span id="authority-label" class="property-label"><g:message code="authority.authority.label" default="Authority" /></span>
@@ -46,6 +37,15 @@
 					<span id="form-label" class="property-label"><g:message code="authority.form.label" default="Form" /></span>
 					
 						<span class="property-value" aria-labelledby="form-label"><g:link controller="form" action="show" id="${authorityInstance?.form?.id}">${authorityInstance?.form?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${authorityInstance?.post}">
+				<li class="fieldcontain">
+					<span id="post-label" class="property-label"><g:message code="authority.post.label" default="Post" /></span>
+					
+						<span class="property-value" aria-labelledby="post-label"><g:link controller="post" action="show" id="${authorityInstance?.post?.id}">${authorityInstance?.post?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

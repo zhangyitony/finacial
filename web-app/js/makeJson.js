@@ -27,6 +27,7 @@ function makeTextClean(str){
 					arr.push("]}");
 				}
 			}else {
+				
 				arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"textfield\"}");
 				//arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\"}");
 			}

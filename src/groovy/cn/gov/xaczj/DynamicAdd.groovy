@@ -5,9 +5,6 @@ import java.lang.annotation.Documented;
 class DynamicAdd {
 	ArrayList<TableDynamic> tableList= new ArrayList<TableDynamic>();
 	
-	//def tablebean;
-	//TableBean tablebean;
-	
 	public void lunch(ArrayList <HashMap <String,String>> list)
 	{
 		
@@ -35,33 +32,16 @@ class DynamicAdd {
 				def operators = doc.children().get(1);
 				int cnt=0;
 				params.each{
-		//			outputChildren(it,1,tableDy.table);
 					
 					outputChildren(it,1,tableDy.table,fileds,cnt++);
 				}
 				println(tableDy.table);
-		//		暂时先不考虑操作运算
-		//		operators.each{
-		//			outputChildren(it,1,tableDy.operate);
-		//		}
-		//		println(tableDy.operate);
-		//		end
-				
-			
-				tableList.add(tableDy);
-				tableList.each {
-					//parseToJson(it);
-				}	
-				list.add(fileds);
+				int index = Integer.parseInt(tableId.split('table')[1]);
+				tableList.putAt(index-1, tableDy);
+				list.putAt(index-1, fileds);
 			}						
 		}								
 	}
-//	static main(args) {
-//		
-//		def run = new dynamicAdd();
-//		run.lunch();
-//	}
-
 	
 	private  outputChildren( node, level,table1)
 	{

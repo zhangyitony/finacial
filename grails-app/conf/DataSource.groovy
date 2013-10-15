@@ -15,23 +15,23 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev_chen"
+            url = "jdbc:sqlserver://192.168.2.194:1433;databaseName=xianFinacial"
         }
     }
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev_chen"
+            url = "jdbc:sqlserver://192.168.2.194:1433;databaseName=xianFinacial"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:sqlserver://192.168.3.107:1433;databaseName=test_dev_chen"
+            url = "jdbc:sqlserver://192.168.2.194:1433;databaseName=xianFinacial"
             pooled = true
             properties {
                maxActive = -1
-               minEvictableIdleTimeMillis=1800000
+               minEvictableIdleTimeMillis=1800001
                timeBetweenEvictionRunsMillis=1800000
                numTestsPerEvictionRun=3
                testOnBorrow=true

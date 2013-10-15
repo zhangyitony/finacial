@@ -2,20 +2,12 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: authorityInstance, field: 'acount', 'error')} required">
-	<label for="acount">
-		<g:message code="authority.acount.label" default="Acount" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="acount" name="acount.id" from="${test.Acount.list()}" optionKey="id" required="" value="${authorityInstance?.acount?.id}" class="many-to-one"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: authorityInstance, field: 'authority', 'error')} ">
+<div class="fieldcontain ${hasErrors(bean: authorityInstance, field: 'authority', 'error')} required">
 	<label for="authority">
 		<g:message code="authority.authority.label" default="Authority" />
-		
+		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="authority" value="${authorityInstance?.authority}"/>
+	<g:field name="authority" type="number" value="${authorityInstance.authority}" required=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: authorityInstance, field: 'form', 'error')} required">
@@ -24,5 +16,13 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<g:select id="form" name="form.id" from="${test.Form.list()}" optionKey="id" required="" value="${authorityInstance?.form?.id}" class="many-to-one"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: authorityInstance, field: 'post', 'error')} required">
+	<label for="post">
+		<g:message code="authority.post.label" default="Post" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="post" name="post.id" from="${test.Post.list()}" optionKey="id" required="" value="${authorityInstance?.post?.id}" class="many-to-one"/>
 </div>
 

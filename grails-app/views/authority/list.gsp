@@ -24,11 +24,11 @@
 				<thead>
 					<tr>
 					
-						<th><g:message code="authority.acount.label" default="Acount" /></th>
-					
 						<g:sortableColumn property="authority" title="${message(code: 'authority.authority.label', default: 'Authority')}" />
 					
 						<th><g:message code="authority.form.label" default="Form" /></th>
+					
+						<th><g:message code="authority.post.label" default="Post" /></th>
 					
 					</tr>
 				</thead>
@@ -36,11 +36,11 @@
 				<g:each in="${authorityInstanceList}" status="i" var="authorityInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${authorityInstance.id}">${fieldValue(bean: authorityInstance, field: "acount")}</g:link></td>
-					
-						<td>${fieldValue(bean: authorityInstance, field: "authority")}</td>
+						<td><g:link action="show" id="${authorityInstance.id}">${fieldValue(bean: authorityInstance, field: "authority")}</g:link></td>
 					
 						<td>${fieldValue(bean: authorityInstance, field: "form")}</td>
+					
+						<td>${fieldValue(bean: authorityInstance, field: "post")}</td>
 					
 					</tr>
 				</g:each>

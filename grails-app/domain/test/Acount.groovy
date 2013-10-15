@@ -3,12 +3,11 @@ package test
 class Acount {
 	String acountName
 	String password
-	String jobTitle//职务名称
-	String parentAcount//上级单位
+	int parentAcount
+	
+	static hasMany = [posts:Post]
 
 	
-	static hasMany = [authoritys:Authority]
-	static belongsTo = [role:Role]
     static constraints = {
     }
 	

@@ -1,57 +1,80 @@
+import java.util.ArrayList;
+
 import org.hibernate.*
 import org.springframework.web.context.support.WebApplicationContextUtils
 
+import test.Form
 import cn.gov.xaczj.*;
 import cn.gov.xaczj.domain.*;
-
 import groovy.xml.StreamingMarkupBuilder;
 
 class BootStrap {
 	
-	
-	def dynamic;
+	/*
+	 * 在spring中注册的对象实例，在服务器上下文都可以按照类似方式访问到。请查看conf/spring/resources.groovy
+	 * start
+	 */
+	def dynamic;//spring容器托管的DynamicAdd实例。参考src/groovy/cn.gov.xaczj/DynamicAdd.groovy
 	def tableList;
+	/*end
+	 */
+	
     def init = { servletContext ->
 		//可临时注释掉，加快调试		
-					initCustomField();
+					initCustomField();//
 		    }
     def destroy = {
     }
 	
 	/**
 	 * @brief 初始化数据库，定制数据库的列
+	 * 初始化表格信息。将配置文件中的表格信息，持久化到数据库；
+	 * 将表格的信息同时读取到服务器上下文中，可供随时查看。
 	 */
 	def initCustomField = {
 		
 		System.out.println("in boot strap");		
 		initXml();		
 		addFiledsOT();		
-//		Session session = HibernateUtil.getInstance().getCurrentSession();
-//				 Transaction tx = session.beginTransaction();
-//				 try {
-//		
-//		
-//				 } catch (Exception e) {
-//					tx.rollback();
-//					System.out.println("e = " + e);
-//				 }
-	  
-  
 	}
-
+	
+/**
+ * 在之前生成的表格多重映射配置文件中，在《dynamic-component》中对应的增加列，从而hibernate在数据库中可以创建这些列，
+ * @return
+ */
 	def addFiledsOT() {
 		String tableName = "";
 		HashMap<String,String> fileds = new HashMap<String,String>();
-//		ArrayList <HashMap <String,String>> list =new ArrayList <HashMap <String,String>>();
-//		tableList = new ArrayList <HashMap <String,String>>();
-		readCustomFiledsFromFile(tableList);
-		
+		readCustomFiledsFromFile(tableList);//初始化spring托管的实例，将表格信息存入list中
+		ArrayList<TableDynamic>  dyList = dynamic.getTableList();
+		int formId;//store form id
+		Form inDatabase;//used to insert or update form info
+		for(TableDynamic tmp: dyList){
+			//chen begin
+			if(tmp == null){
+				continue;
+			}
+			formId = Integer.parseInt(tmp.entityName.get("tableName").split("table")[1]);
+			inDatabase = Form.findByNo(formId);
+			
+			if(inDatabase == null){
+				inDatabase = new Form();
+			}
+			inDatabase.no = formId;
+			inDatabase.name =  tmp.entityName.get("chTableName");
+//			println("no:"+inDatabase.no +"name"+inDatabase.name);
+			inDatabase.save(flush:true);//GORM will update it for u ^..^
+			
+			//chen end
+		}
+		CustomizableEntityManager tableEntityManager;
 		for(int i=0; i<tableList.size(); i++)
 		{		
 			HibernateUtil.getInstance().getCurrentSession();
 			fileds=tableList.get(i);
 			tableName = fileds.get("tableName");
-			CustomizableEntityManager tableEntityManager = new CustomizableEntityManagerImpl(Table.class,tableName);
+			tableEntityManager = new CustomizableEntityManagerImpl(Table.class,tableName);
+
 			if(fileds.get("tableName") != null)
 			{
 				fileds.remove("tableName");
@@ -62,19 +85,30 @@ class BootStrap {
 			
 		
 	}
-	
+	/**
+	 * 初始化spring托管的实例，读取配置文件，将表格信息存入list中
+	 * @param list 
+	 * @return void
+	 */
 	private readCustomFiledsFromFile(ArrayList <HashMap <String,String>> list){
 
 		dynamic.lunch(list);
-		//def dynamicadd;
-		//dynamicadd.lunch(list);
 	}
-	
+	/**
+	 * 初始化 表格 多重映射的hibernate配置文件
+	 * @return void
+	 */
 	def initXml()
 	{
-		def writer = new FileWriter("src/java/cn/gov/xaczj/domain/Table.hbm.xml")
-	
-		def comment = ''' <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "http://svn.compass-project.org/svn/compass/trunk/lib/hibernate/hibernate-mapping-3.0.dtd">'''
+		def beginTime = new Date();
+		def endTime ;
+		println(beginTime.getTime());
+		
+		def writer = new PrintWriter (new FileWriter("src/java/cn/gov/xaczj/domain/Table.hbm.xml"),true);
+//		def writer = new FileWriter("src/java/cn/gov/xaczj/domain/Table.hbm.xml");
+		
+	//	def comment = ''' <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "http://svn.compass-project.org/svn/compass/trunk/lib/hibernate/hibernate-mapping-3.0.dtd">'''
+		def comment = ''' <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "./hibernate-mapping-3.0.dtd">'''
 		int cnt=countXml();
 		def xml = new StreamingMarkupBuilder().bind { 
 			mkp.pi(xml: "version='1.0'  encoding='UTF-8' standalone='no'") 
@@ -94,6 +128,7 @@ class BootStrap {
 						property("column":"initFillTime","generated":"never","lazy":"false","name":"initFillTime","optimistic-lock":"true","type":"date","unique":"false")
 						property("column":"initFillAcount","name":"initFillAcount","optimistic-lock":"true")
 						property("column":"inChargeAcount","name":"inChargeAcount","optimistic-lock":"true")
+						property("column":"receiveAcount","name":"receiveAcount","optimistic-lock":"true")
 						property("column":"status","generated":"never","lazy":"false","name":"status","optimistic-lock":"true","type":"short","unique":"false")
 						property("column":"planTime","generated":"never","lazy":"false","name":"planTime","optimistic-lock":"true","type":"date","unique":"false")
 						"dynamic-component"("insert":"true","name":"customProperties","optimistic-lock":"true","unique":"false","update":"true"){}
@@ -102,8 +137,12 @@ class BootStrap {
 			
 		    }
 		}
-		println xml
+//		println xml
 		writer << xml;
+		writer.flush();
+		writer.close();
+		endTime = new Date();
+		println(endTime.getTime());
 	}
 	
 	int countXml(){

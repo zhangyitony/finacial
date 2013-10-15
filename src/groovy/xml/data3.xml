@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<table tableName= "social_rent_fund" chTableName="西安市社会租赁公租房资金收支情况表" identifier ="table3" cycle="3">
+	<table tableName= "social_rent_fund" chTableName="西安市社会租赁公租房资金收支情况表3" identifier ="table3" cycle="3">
 		<params name ="customFileds" >
 			<param name ="town_name" value ="区县名称" type = "string"></param>
 			<param name ="year_of_surplus" value="年初资金结余合计">

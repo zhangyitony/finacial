@@ -19,8 +19,8 @@ class MyjobJob {
 	static now_year=0
 	//static 
     static triggers = {
-		simple repeatInterval: 10000l // execute job once in 5 seconds
-       // cron name: 'myTrigger', cronExpression: "* * 22 * * ?"
+	//	simple repeatInterval: 50000l // execute job once in 5 seconds
+     //   cron name: 'myTrigger', cronExpression: "* * 22 * * ?"
 	}
 
 	//def timeout=10001;
@@ -44,10 +44,12 @@ class MyjobJob {
 			now_month=1;
 			now_year++;
 		}
-		while (count<=tablenum){
+		while (count<=tablenum)
+		{
 			TableDynamic td = tableList.get(count-1);
 			int cc = Integer.parseInt(td.cycle);
-			if(((now_year-start_year)*12+(now_month-start_month))%cc==0)
+			
+			if(cc != 0 && ((now_year-start_year)*12+(now_month-start_month))%cc==0)
 			{																
 				def whynot=Authority.createCriteria()
 				def need_id_list=whynot.list {
@@ -71,7 +73,7 @@ class MyjobJob {
 			}
 		count++								
 		}		
-		println("cry"+n++)		 
+		println(" cry"+(n++)+" "+now_date.toLocaleString());		 
 		return;
     }
 }

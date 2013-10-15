@@ -1,0 +1,40 @@
+[
+                    
+				      {id:"00",text:"汇总表",expended:true,"children":[
+								{id:"001",text:"所有财政汇总",expanded:true,"children":[			
+										{id:"0010",text:"区县财政汇总",leaf:true},
+										{id:"0011",text:"开发区财政汇总",leaf:true},
+								]},
+								{id:"002",text:"所有建设单位汇总",expanded:true,"children":[
+										{id:"0020",text:"十三区县建设单位汇总",expended:true,"children":[
+										       			{id:"002000",text:"碑林区建设单位汇总",leaf:true},
+														{id:"002001",text:"未央区建设单位汇总",leaf:true},
+														{id:"002002",text:"莲湖区建设单位汇总",leaf:true},
+														{id:"002003",text:"雁塔区建设单位汇总",leaf:true},
+														{id:"002004",text:"新城区建设单位汇总",leaf:true},
+														{id:"002005",text:"灞桥区建设单位汇总",leaf:true},
+														{id:"002006",text:"长安区建设单位汇总",leaf:true},
+														{id:"002007",text:"临潼区建设单位汇总",leaf:true},
+														{id:"002008",text:"阎良区建设单位汇总",leaf:true},
+														{id:"002009",text:"户县建设单位汇总",leaf:true},
+														{id:"002010",text:"蓝田县建设单位汇总",leaf:true},
+														{id:"002011",text:"周至县建设单位汇总",leaf:true},
+														{id:"002012",text:"高陵县建设单位汇总",leaf:true},
+										]},
+										{id:"0021",text:"开发区建设单位汇总",expended:true,"children":[
+										      			{id:"00210",text:"经开区建设单位汇总",leaf:true},
+														{id:"00211",text:"高新区建设单位汇总",leaf:true},
+														{id:"00212",text:"曲江新区建设单位汇总",leaf:true},
+														{id:"00213",text:"航天基地建设单位汇总",leaf:true},
+														{id:"00214",text:"航空基地建设单位汇总",leaf:true},
+														{id:"00215",text:"浐灞建设单位汇总",leaf:true},
+														{id:"00216",text:"沣东新城建设单位汇总",leaf:true},
+														{id:"00217",text:"国际港务区建设单位汇总",leaf:true},
+										]}
+								]}
+					 ]},
+					 {id:"01",text:"原始表",expended:true,"children":[
+					      {id:"010",text:"西安市本级财政",leaf:true},
+					 ]}
+
+]

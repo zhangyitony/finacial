@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<table tableName= "social_rent_fund" chTableName="西安市廉租住房建设财政投资补充资料表" identifier ="table6" cycle="3">
+	<table tableName= "social_rent_fund" chTableName="西安市廉租住房建设财政投资补充资料表6" identifier ="table6" cycle="0">
 		<params name =	"customFileds">
 			<param name ="year" value="年度" type="string"></param>
 			<param name ="sum" value="合计" type="big_decimal"></param>

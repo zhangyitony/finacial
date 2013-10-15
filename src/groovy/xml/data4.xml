@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<table tableName="investresource_lowprice_rent" chTableName="西安市廉租住房建设项目投资来源基本情况统计表" identifier="table4" cycle="3">
+	<table tableName="investresource_lowprice_rent" chTableName="西安市廉租住房建设项目投资来源基本情况统计表4" identifier="table4" cycle="3">
 	<params name =	"customFileds">
 		<param name = "proj_name" value="项目名称" type="string" ></param>
 		<param name = "year" value="年度" type="integer"></param>

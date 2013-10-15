@@ -32,26 +32,6 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${acountInstance?.authoritys}">
-				<li class="fieldcontain">
-					<span id="authoritys-label" class="property-label"><g:message code="acount.authoritys.label" default="Authoritys" /></span>
-					
-						<g:each in="${acountInstance.authoritys}" var="a">
-						<span class="property-value" aria-labelledby="authoritys-label"><g:link controller="authority" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${acountInstance?.jobTitle}">
-				<li class="fieldcontain">
-					<span id="jobTitle-label" class="property-label"><g:message code="acount.jobTitle.label" default="Job Title" /></span>
-					
-						<span class="property-value" aria-labelledby="jobTitle-label"><g:fieldValue bean="${acountInstance}" field="jobTitle"/></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${acountInstance?.parentAcount}">
 				<li class="fieldcontain">
 					<span id="parentAcount-label" class="property-label"><g:message code="acount.parentAcount.label" default="Parent Acount" /></span>
@@ -70,11 +50,13 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${acountInstance?.role}">
+				<g:if test="${acountInstance?.posts}">
 				<li class="fieldcontain">
-					<span id="role-label" class="property-label"><g:message code="acount.role.label" default="Role" /></span>
+					<span id="posts-label" class="property-label"><g:message code="acount.posts.label" default="Posts" /></span>
 					
-						<span class="property-value" aria-labelledby="role-label"><g:link controller="role" action="show" id="${acountInstance?.role?.id}">${acountInstance?.role?.encodeAsHTML()}</g:link></span>
+						<g:each in="${acountInstance.posts}" var="p">
+						<span class="property-value" aria-labelledby="posts-label"><g:link controller="post" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></span>
+						</g:each>
 					
 				</li>
 				</g:if>

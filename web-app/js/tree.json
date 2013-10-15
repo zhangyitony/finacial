@@ -1,0 +1,29 @@
+[
+    {id:'1',text:'查看表格',expended:true,"children":[                      
+				      {id:"18",text:"汇总表",expended:true,"children":[
+								{id:"17",text:"财政汇总",expanded:true,"children":[			
+										{id:"2",text:"区县财政汇总",leaf:true},
+										{id:"3",text:"开发区财政汇总",leaf:true},
+								]},
+								{id:"4",text:"建设单位汇总",expanded:true,"children":[
+										{id:"5",text:"十三区县建设单位汇总",expended:true,"children":[
+										       			{id:"6",text:"莲湖区建设单位汇总",leaf:true},
+														{id:"7",text:"未央区建设单位汇总",leaf:true},
+														{id:"8",text:"区建设单位汇总",leaf:true},
+														{id:"9",text:"区建设单位汇总",leaf:true},
+														{id:"10",text:"区建设单位汇总",leaf:true},
+														{id:"11",text:"区建设单位汇总",leaf:true},
+														{id:"12",text:"区建设单位汇总",leaf:true},
+										]},
+										{id:"13",text:"开发区建设单位汇总",expended:true,"children":[
+										      			{id:"14",text:"经开区建设单位汇总",leaf:true},
+														{id:"15",text:"高新区建设单位汇总",leaf:true},
+														{id:"16",text:"曲江新区建设单位汇总",leaf:true},
+										]}
+								]}
+					 ]},
+					 {id:"19",text:"原始表",expended:true,"children":[
+					      {id:"20",text:"市本级财政",leaf:true}
+					 ]}
+	]}
+]

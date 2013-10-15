@@ -1,0 +1,31 @@
+Testsuite: test.RoleControllerTests
+Tests run: 8, Failures: 0, Errors: 0, Time elapsed: 1.246 sec
+------------- Standard Output ---------------
+--Output from testList--
+--Output from testShow--
+--Output from testCreate--
+--Output from testSave--
+--Output from testDelete--
+--Output from testIndex--
+--Output from testUpdate--
+--Output from testEdit--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testList--
+--Output from testShow--
+--Output from testCreate--
+--Output from testSave--
+--Output from testDelete--
+--Output from testIndex--
+--Output from testUpdate--
+--Output from testEdit--
+------------- ---------------- ---------------
+
+Testcase: testList took 0.334 sec
+Testcase: testShow took 0.168 sec
+Testcase: testCreate took 0.072 sec
+Testcase: testSave took 0.101 sec
+Testcase: testDelete took 0.081 sec
+Testcase: testIndex took 0.087 sec
+Testcase: testUpdate took 0.09 sec
+Testcase: testEdit took 0.08 sec

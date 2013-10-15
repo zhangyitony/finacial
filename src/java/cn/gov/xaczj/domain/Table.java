@@ -10,9 +10,9 @@ package cn.gov.xaczj.domain;
 	 private Date initFillTime;
 	 private int initFillAcount;
 	 private int inChargeAcount;
+	 private int receiveAcount;
 	 private short status;
 	 private Date planTime;
-	
 	 public int getId() {
 	     return id;
 	 }
@@ -59,6 +59,14 @@ package cn.gov.xaczj.domain;
 
 	public void setPlanTime(Date planTime) {
 		this.planTime = planTime;
+	}
+
+	public int getReceiveAcount() {
+		return receiveAcount;
+	}
+
+	public void setReceiveAcount(int receiveAcount) {
+		this.receiveAcount = receiveAcount;
 	}
 
 	

@@ -3,7 +3,7 @@ package test
 class PlanTime {
 	int tableId;
 	Date planTime;
-	int acountId; 
+	int postId; 
     static constraints = {
     }
 }

@@ -3,12 +3,16 @@
 	<head>
 	<link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all.css')}"/>
 <%--	 <link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all-neptune.css')}" ></link>--%>
-		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/bootstrap.js')}"></script>
-		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/ext-all.js')}"></script>
+<%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/bootstrap.js')}"></script>--%>
+		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/ext-all-dev.js')}"></script>
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/locale/ext-lang-zh_CN.js')}"></script>
 		<title>登陆界面</title>
 		<script type="text/javascript" charset="utf-8">
+				Ext.require([
+		               'Ext.tip.QuickTipManager'
+		        ]);
 		       Ext.onReady(function(){
+		    	   Ext.tip.QuickTipManager.init();
 		    	   var denglu= Ext.create('Ext.form.Panel', {
 		    		     x:50,
 	              	     y:70,

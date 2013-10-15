@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="mti54-PC" name="test.RoleControllerTests" tests="8" time="1.246" timestamp="2013-10-15T06:31:12">
+  <properties />
+  <testcase classname="test.RoleControllerTests" name="testList" time="0.334" />
+  <testcase classname="test.RoleControllerTests" name="testShow" time="0.168" />
+  <testcase classname="test.RoleControllerTests" name="testCreate" time="0.072" />
+  <testcase classname="test.RoleControllerTests" name="testSave" time="0.101" />
+  <testcase classname="test.RoleControllerTests" name="testDelete" time="0.081" />
+  <testcase classname="test.RoleControllerTests" name="testIndex" time="0.087" />
+  <testcase classname="test.RoleControllerTests" name="testUpdate" time="0.09" />
+  <testcase classname="test.RoleControllerTests" name="testEdit" time="0.08" />
+  <system-out><![CDATA[--Output from testList--
+--Output from testShow--
+--Output from testCreate--
+--Output from testSave--
+--Output from testDelete--
+--Output from testIndex--
+--Output from testUpdate--
+--Output from testEdit--
+]]></system-out>
+  <system-err><![CDATA[--Output from testList--
+--Output from testShow--
+--Output from testCreate--
+--Output from testSave--
+--Output from testDelete--
+--Output from testIndex--
+--Output from testUpdate--
+--Output from testEdit--
+]]></system-err>
+</testsuite>

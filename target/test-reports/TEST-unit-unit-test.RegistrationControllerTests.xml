@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="5" hostname="mti54-PC" name="test.RegistrationControllerTests" tests="8" time="4.961" timestamp="2013-10-15T06:31:07">
+  <properties />
+  <testcase classname="test.RegistrationControllerTests" name="testList" time="3.231" />
+  <testcase classname="test.RegistrationControllerTests" name="testShow" time="0.87">
+    <failure message="Assertion failed: &#xa;&#xa;assert registration.save() != null&#xa;       |            |      |&#xa;       |            null   false&#xa;       test.Registration : (unsaved)&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Assertion failed: 
+
+assert registration.save() != null
+       |            |      |
+       |            null   false
+       test.Registration : (unsaved)
+
+	at test.RegistrationControllerTests.testShow(RegistrationControllerTests.groovy:62)
+</failure>
+  </testcase>
+  <testcase classname="test.RegistrationControllerTests" name="testCreate" time="0.074" />
+  <testcase classname="test.RegistrationControllerTests" name="testSave" time="0.192">
+    <failure message="Assertion failed: &#xa;&#xa;assert response.redirectedUrl == &apos;/registration/show/1&apos;&#xa;       |        |             |&#xa;       |        null          false&#xa;       org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletResponse@18ce15a&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Assertion failed: 
+
+assert response.redirectedUrl == &apos;/registration/show/1&apos;
+       |        |             |
+       |        null          false
+       org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletResponse@18ce15a
+
+	at test.RegistrationControllerTests.testSave(RegistrationControllerTests.groovy:48)
+</failure>
+  </testcase>
+  <testcase classname="test.RegistrationControllerTests" name="testDelete" time="0.11">
+    <failure message="Assertion failed: &#xa;&#xa;assert registration.save() != null&#xa;       |            |      |&#xa;       |            null   false&#xa;       test.Registration : (unsaved)&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Assertion failed: 
+
+assert registration.save() != null
+       |            |      |
+       |            null   false
+       test.Registration : (unsaved)
+
+	at test.RegistrationControllerTests.testDelete(RegistrationControllerTests.groovy:144)
+</failure>
+  </testcase>
+  <testcase classname="test.RegistrationControllerTests" name="testIndex" time="0.068" />
+  <testcase classname="test.RegistrationControllerTests" name="testUpdate" time="0.087">
+    <failure message="Assertion failed: &#xa;&#xa;assert registration.save() != null&#xa;       |            |      |&#xa;       |            null   false&#xa;       test.Registration : (unsaved)&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Assertion failed: 
+
+assert registration.save() != null
+       |            |      |
+       |            null   false
+       test.Registration : (unsaved)
+
+	at test.RegistrationControllerTests.testUpdate(RegistrationControllerTests.groovy:100)
+</failure>
+  </testcase>
+  <testcase classname="test.RegistrationControllerTests" name="testEdit" time="0.115">
+    <failure message="Assertion failed: &#xa;&#xa;assert registration.save() != null&#xa;       |            |      |&#xa;       |            null   false&#xa;       test.Registration : (unsaved)&#xa;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Assertion failed: 
+
+assert registration.save() != null
+       |            |      |
+       |            null   false
+       test.Registration : (unsaved)
+
+	at test.RegistrationControllerTests.testEdit(RegistrationControllerTests.groovy:80)
+</failure>
+  </testcase>
+  <system-out><![CDATA[--Output from testList--
+--Output from testShow--
+--Output from testCreate--
+--Output from testSave--
+--Output from testDelete--
+--Output from testIndex--
+--Output from testUpdate--
+--Output from testEdit--
+]]></system-out>
+  <system-err><![CDATA[--Output from testList--
+--Output from testShow--
+--Output from testCreate--
+--Output from testSave--
+--Output from testDelete--
+--Output from testIndex--
+--Output from testUpdate--
+--Output from testEdit--
+]]></system-err>
+</testsuite>

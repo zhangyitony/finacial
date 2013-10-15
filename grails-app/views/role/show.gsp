@@ -23,22 +23,22 @@
 			</g:if>
 			<ol class="property-list role">
 			
-				<g:if test="${roleInstance?.acount}">
-				<li class="fieldcontain">
-					<span id="acount-label" class="property-label"><g:message code="role.acount.label" default="Acount" /></span>
-					
-						<g:each in="${roleInstance.acount}" var="a">
-						<span class="property-value" aria-labelledby="acount-label"><g:link controller="acount" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${roleInstance?.name}">
 				<li class="fieldcontain">
 					<span id="name-label" class="property-label"><g:message code="role.name.label" default="Name" /></span>
 					
 						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${roleInstance}" field="name"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${roleInstance?.posts}">
+				<li class="fieldcontain">
+					<span id="posts-label" class="property-label"><g:message code="role.posts.label" default="Posts" /></span>
+					
+						<g:each in="${roleInstance.posts}" var="p">
+						<span class="property-value" aria-labelledby="posts-label"><g:link controller="post" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></span>
+						</g:each>
 					
 				</li>
 				</g:if>

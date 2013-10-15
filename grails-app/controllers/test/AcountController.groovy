@@ -124,7 +124,7 @@ class AcountController extends BaseAdminController {
 			if(acount.acountName.equals("admin")){
 				redirectUrl = "/baseAdmin/adminIndex"
 			}else{
-				redirectUrl = "/mockMainDisplay/showMain";
+				redirectUrl = "/mockMainDisplay/choosePost";
 			}
 			tmp =[success:true,data:redirectUrl]
 //			render tmp as JSON;

@@ -43,11 +43,29 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${postInstance?.no}">
+				<li class="fieldcontain">
+					<span id="no-label" class="property-label"><g:message code="post.no.label" default="No" /></span>
+					
+						<span class="property-value" aria-labelledby="no-label"><g:fieldValue bean="${postInstance}" field="no"/></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${postInstance?.operater}">
 				<li class="fieldcontain">
 					<span id="operater-label" class="property-label"><g:message code="post.operater.label" default="Operater" /></span>
 					
 						<span class="property-value" aria-labelledby="operater-label"><g:fieldValue bean="${postInstance}" field="operater"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${postInstance?.parentPost}">
+				<li class="fieldcontain">
+					<span id="parentPost-label" class="property-label"><g:message code="post.parentPost.label" default="Parent Post" /></span>
+					
+						<span class="property-value" aria-labelledby="parentPost-label"><g:fieldValue bean="${postInstance}" field="parentPost"/></span>
 					
 				</li>
 				</g:if>

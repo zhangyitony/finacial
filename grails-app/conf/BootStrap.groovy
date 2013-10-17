@@ -126,9 +126,9 @@ class BootStrap {
 						}
 
 						property("column":"initFillTime","generated":"never","lazy":"false","name":"initFillTime","optimistic-lock":"true","type":"date","unique":"false")
-						property("column":"initFillAcount","name":"initFillAcount","optimistic-lock":"true")
-						property("column":"inChargeAcount","name":"inChargeAcount","optimistic-lock":"true")
-						property("column":"receiveAcount","name":"receiveAcount","optimistic-lock":"true")
+						property("column":"initFillPost","name":"initFillPost","optimistic-lock":"true")
+						property("column":"inChargePost","name":"inChargePost","optimistic-lock":"true")
+						property("column":"receivePost","name":"receivePost","optimistic-lock":"true")
 						property("column":"status","generated":"never","lazy":"false","name":"status","optimistic-lock":"true","type":"short","unique":"false")
 						property("column":"planTime","generated":"never","lazy":"false","name":"planTime","optimistic-lock":"true","type":"date","unique":"false")
 						"dynamic-component"("insert":"true","name":"customProperties","optimistic-lock":"true","unique":"false","update":"true"){}

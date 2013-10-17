@@ -8,9 +8,9 @@ package cn.gov.xaczj.domain;
 
 	 private int id;
 	 private Date initFillTime;
-	 private int initFillAcount;
-	 private int inChargeAcount;
-	 private int receiveAcount;
+	 private int initFillPost;
+	 private int inChargePost;
+	 private int receivePost;
 	 private short status;
 	 private Date planTime;
 	 public int getId() {
@@ -29,20 +29,20 @@ package cn.gov.xaczj.domain;
 		this.initFillTime = initFillTime;
 	}
 
-	public int getInitFillAcount() {
-		return initFillAcount;
+	public int getInitFillPost() {
+		return initFillPost;
 	}
 
-	public void setInitFillAcount(int initFillAcount) {
-		this.initFillAcount = initFillAcount;
+	public void setInitFillPost(int initFillPost) {
+		this.initFillPost = initFillPost;
 	}
 
-	public int getInChargeAcount() {
-		return inChargeAcount;
+	public int getInChargePost() {
+		return inChargePost;
 	}
 
-	public void setInChargeAcount(int inChargeAcount) {
-		this.inChargeAcount = inChargeAcount;
+	public void setInChargePost(int inChargePost) {
+		this.inChargePost = inChargePost;
 	}
 
 	public short getStatus() {
@@ -61,12 +61,12 @@ package cn.gov.xaczj.domain;
 		this.planTime = planTime;
 	}
 
-	public int getReceiveAcount() {
-		return receiveAcount;
+	public int getReceivePost() {
+		return receivePost;
 	}
 
-	public void setReceiveAcount(int receiveAcount) {
-		this.receiveAcount = receiveAcount;
+	public void setReceivePost(int receivePost) {
+		this.receivePost = receivePost;
 	}
 
 	

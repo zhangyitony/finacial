@@ -10,14 +10,6 @@
 	<g:textField name="acountName" value="${acountInstance?.acountName}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: acountInstance, field: 'parentAcount', 'error')} required">
-	<label for="parentAcount">
-		<g:message code="acount.parentAcount.label" default="Parent Acount" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:field name="parentAcount" type="number" value="${acountInstance.parentAcount}" required=""/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: acountInstance, field: 'password', 'error')} ">
 	<label for="password">
 		<g:message code="acount.password.label" default="Password" />

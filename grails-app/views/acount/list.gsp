@@ -26,8 +26,6 @@
 					
 						<g:sortableColumn property="acountName" title="${message(code: 'acount.acountName.label', default: 'Acount Name')}" />
 					
-						<g:sortableColumn property="parentAcount" title="${message(code: 'acount.parentAcount.label', default: 'Parent Acount')}" />
-					
 						<g:sortableColumn property="password" title="${message(code: 'acount.password.label', default: 'Password')}" />
 					
 					</tr>
@@ -37,8 +35,6 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
 						<td><g:link action="show" id="${acountInstance.id}">${fieldValue(bean: acountInstance, field: "acountName")}</g:link></td>
-					
-						<td>${fieldValue(bean: acountInstance, field: "parentAcount")}</td>
 					
 						<td>${fieldValue(bean: acountInstance, field: "password")}</td>
 					

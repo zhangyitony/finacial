@@ -1,11 +1,12 @@
-[
-                    
-				      {id:"00",text:"汇总表",expended:true,"children":[
-								{id:"001",text:"所有财政汇总",expanded:true,"children":[			
+[                  
+				     {id:"18",text:"汇总表",expended:true,"children":[
+				                {id:"000",text:"市本级财政汇总",leaf:true},
+								{id:"001",text:"区县/开发区财政汇总",expended:true,"children":[			
 										{id:"0010",text:"区县财政汇总",leaf:true},
 										{id:"0011",text:"开发区财政汇总",leaf:true},
+										
 								]},
-								{id:"002",text:"所有建设单位汇总",expanded:true,"children":[
+								{id:"002",text:"所有建设单位汇总",expended:true,"children":[
 										{id:"0020",text:"十三区县建设单位汇总",expended:true,"children":[
 										       			{id:"002000",text:"碑林区建设单位汇总",leaf:true},
 														{id:"002001",text:"未央区建设单位汇总",leaf:true},
@@ -33,8 +34,7 @@
 										]}
 								]}
 					 ]},
-					 {id:"01",text:"原始表",expended:true,"children":[
-					      {id:"010",text:"西安市本级财政",leaf:true},
+					 {id:"20",text:"原始表",expended:true,"children":[
+					      {id:"010",text:"西安市本级财政",leaf:true}
 					 ]}
-
 ]

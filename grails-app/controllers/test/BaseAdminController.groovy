@@ -11,11 +11,11 @@ class BaseAdminController {
 		
 	}
 	private adminAuth(){
-		println("in the admin auth");
-		
-		if(!(session.acount)||!(session.acount?.acountName.equals("admin"))){
-			redirect(url:'/index.gsp')
-			return false
-		}
+//		println("in the admin auth");
+//		
+//		if(!(session.acount)||!(session.acount?.acountName.equals("admin"))){
+//			redirect(url:'/index.gsp')
+//			return false
+//		}
 	}
 }

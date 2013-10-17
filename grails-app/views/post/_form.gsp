@@ -27,12 +27,28 @@
 
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: postInstance, field: 'no', 'error')} required">
+	<label for="no">
+		<g:message code="post.no.label" default="No" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="no" type="number" value="${postInstance.no}" required=""/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: postInstance, field: 'operater', 'error')} ">
 	<label for="operater">
 		<g:message code="post.operater.label" default="Operater" />
 		
 	</label>
 	<g:textField name="operater" value="${postInstance?.operater}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: postInstance, field: 'parentPost', 'error')} required">
+	<label for="parentPost">
+		<g:message code="post.parentPost.label" default="Parent Post" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:field name="parentPost" type="number" value="${postInstance.parentPost}" required=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: postInstance, field: 'postName', 'error')} ">

@@ -1,8 +1,15 @@
 package test
 
 import grails.converters.JSON
+
+import java.util.ArrayList;
 import java.util.Date
+import java.util.HashMap;
+
+import org.hibernate.Query
+import org.hibernate.transform.AliasToBeanResultTransformer
 import org.springframework.dao.DataIntegrityViolationException
+import cn.gov.xaczj.domain.Table;
 import cn.gov.xaczj.*;
 
 class MockMainDisplayController {
@@ -11,11 +18,14 @@ class MockMainDisplayController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST", getPost:"POST"]
 	
 	def dynamic;
-	
+	def tableList;//spring ioc bean,存放表的列数据类型。自身类型ArrayList <HashMap <String,String>>
 	def showMain(){
 		
 	}
-	
+	/**
+	 * 选出该帐号的所有角色
+	 * @return 所有的角色list
+	 */
 	def choosePost(){
 		def posts = Post.findAllByAcount(Acount.get(session.acount.id));
 		println(posts);
@@ -23,6 +33,10 @@ class MockMainDisplayController {
 		
 	}
 	
+	/**
+	 * 根据用户选的角色，将角色存入session中
+	 * @return
+	 */
 	def setAcountPost(){
 		println("in setAcountPost");
 		println("params"+params);
@@ -39,76 +53,137 @@ class MockMainDisplayController {
 	 */
 	def getShouldFillTables(){
 		Post loginPost = session.acountPost;
-		def results = PlanTime.findAll("\
+		
+		//符合结果的集合
+		def resultsFromDB = PlanTime.findAll("\
 		from PlanTime as p, \
 		     Form as f \
 		where p.tableId = f.no and p.postId = ?", [(int)loginPost.id])
 
-		def tableList = dynamic.getTableList()		
-		def tablelist=[];
+		def tableListExpando = dynamic.getTableList()		
+		def ResultList=[];//存放结果集合，原来的名字容易混淆。
 		HashMap map = null;//store a table's data
-		def ss;
+		def oneResult;
 		TableDynamic td;
 		int cycle;//should fill time cycle
 		int month;
 		int num;
 		String timeStr = "";//formated time string.
-		if(results.size()>0)
+		if(resultsFromDB.size()>0)
 		{
-			for(i in 0..results.size()-1)
+			for(i in 0..resultsFromDB.size()-1)
 			{
 				 map=[:];
-				 ss = results.get(i);
-				 td = tableList.get(ss[0].tableId-1);
+				 oneResult = resultsFromDB.get(i);
+				 td = tableListExpando.get(oneResult[0].tableId-1);
 				 cycle = Integer.parseInt(td.cycle);
-				 month = Integer.parseInt(ss[0].planTime.format('MM'));
-				 timeStr = "";
-				 if (cycle!=0)
-				 {
-					 num = month/cycle;
-				 }
 				
+				 timeStr = dateToDisplayString(oneResult[0].planTime,cycle);
 				 
-				 switch(cycle){
-					 case 6:
-							 if(num==0)
-								 timeStr = "上半年";
-							 else if(num==1)
-								 timeStr = "下半年"
-							 timeStr = ss[0].planTime.format('yyyy年')+"${timeStr}"
-					 break;
-					 case 3:
-					 		switch(num){
-					 		 case 0:timeStr = "第一季度";break;
-							 case 1:timeStr = "第二季度";break;
-							 case 2:timeStr = "第三季度";break;
-							 case 3:timeStr = "第四季度";break;
-							 }
-						 timeStr = ss[0].planTime.format('yyyy年')+"${timeStr}"
-					 break;
-					 case 1:
-					 		timeStr = ss[0].planTime.format('yyyy年/MMM')
-					 break;
-					 case 0:
-					 		timeStr = "";	
-					 break;
-				 }
-				map.putAt("id",ss[0].id)
-				map.putAt("tableId",ss[0].tableId)
-				map.putAt("name",ss[1].name)
+				map.putAt("id",oneResult[0].id)
+				map.putAt("tableId",oneResult[0].tableId)
+				map.putAt("name",oneResult[1].name)
 				map.putAt("time",timeStr)
 				
-				tablelist.add(map);
+				ResultList.add(map);
 			}
 		}
 		
 		
 //		println tablelist;
-		render tablelist as JSON;
+		render ResultList as JSON;
 	}
 	
+	/**
+	 * get should-audited form info,return as json format.
+	 * @return json-formated data
+	 */
+	def getShouldAuditTables(){
+		
+		int myPostNo = session.acountPost.no;
+		
+		LinkedList<HashMap> ResultList=[];//存放返回结果集合
+		LinkedList<Table> dataFromTable =[];//临时存放需要审核的全部表
+		HashMap map = null;//store a table's data
+		
+		Post loginPost = session.acountPost;
+		ArrayList<TableDynamic> allTableList = dynamic.getTableList();
+		int tableId;//表号
+		String tableInDBName;//表在数据库中的名字
+		String tableRealName;//表的真实名字，中文名称
+		
+		HashMap tmp ;//临时储存一条发给前台的数据
+		for(TableDynamic aTable:allTableList){
+			
+			 tableInDBName = aTable.entityName.get("tableName");
+			tableId = Integer.parseInt(tableInDBName.split("table")[1]);
+			tableRealName = aTable.entityName.get("chTableName");
+			println("tableId:"+tableId+" tableDbName:"+tableInDBName+" table real name:"+tableRealName);
+			
+			String sql = "select * from tbl_$tableInDBName as record \
+							where record.receivePost = "+myPostNo+" and record.inchargePost != "+myPostNo
+			println sql;
+			Query qy = HibernateUtil.getInstance().getCurrentSession().createSQLQuery(sql);
+			def afadd = qy.addEntity(tableInDBName.toString());
+//			List<Table> res =afadd.list();
+			for(Table tb:afadd.list()){
+				tmp = new HashMap<String,String>();
+				tmp.put("tableId", tableId);//表号
+				tmp.put("name",tableRealName);//表的真实中文名
+				tmp.put("time", dateToDisplayString(tb.initFillTime,Integer.parseInt(aTable.cycle)));//初始填报时间根据表格的填报周期转换成季度或半年信息
+				tmp.put("id", tb.id);//该条记录在原始数据库中的编号，以便后续操作
+				ResultList.add(tmp);
+			}
+//			println(res);
+		}
+		
+		render ResultList as JSON;
+		
+	}	
 	
 	
+	/**
+	 * 前台在显示时间信息时，需要根据表格填报规则显示季度信息或上半年下半年，此函数用于生成前台所需的显示字符
+	 * @param date 需要转换的时间，类型为Date
+	 * @param cycle 填报周期，int
+	 * @return String
+	 */
+		private String dateToDisplayString(Date date,int cycle){
+			String timeStr = "";//返回给前台显示的时间字符串
+			int month = Integer.parseInt(date.format('MM'));
+			int num;
+			if (cycle!=0)
+			{
+				num = month/cycle;
+			}
+			switch(cycle){
+				case 6:
+						if(num==0)
+							timeStr = "上半年";
+						else if(num==1)
+							timeStr = "下半年"
+						timeStr = date.format('yyyy年')+"${timeStr}"
+				break;
+				case 3:
+						switch(num){
+						 case 0:timeStr = "第一季度";break;
+						case 1:timeStr = "第二季度";break;
+						case 2:timeStr = "第三季度";break;
+						case 3:timeStr = "第四季度";break;
+						}
+					timeStr = date.format('yyyy年')+"${timeStr}"
+				break;
+				case 1:
+						timeStr = date.format('yyyy年/MMM')
+				break;
+				case 0:
+						timeStr = "";
+				break;
+			}
+			
+			return timeStr;
+		}
+
 	private auth(){
 		println("in the auth");
 		if( !session.acount ||session.acount?.acountName.equals("admin")){
@@ -116,11 +191,7 @@ class MockMainDisplayController {
 			redirect(url:'/index.gsp')
 			return false
 		}
-//		else if(session.acount?.acountName.equals("admin")){
-//			println("admin should not get into commit system");
-//			redirect(url:'/index.gsp')
-//			return false
-//		}
+
 		
 		println("auth passed");
 	}

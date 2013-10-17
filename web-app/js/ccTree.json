@@ -1,7 +1,7 @@
 [
-    {id:'1',text:'查看表格',expended:true,"children":[                      
+                   
 					 {id:"01",text:"原始表",expended:true,"children":[
-					      {id:"010",text:"区建设单位",leaf:true},
+					      {id:"010",text:"区建设单位",leaf:true}
 					 ]}
-	]}
+
 ]

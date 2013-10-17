@@ -32,15 +32,6 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${acountInstance?.parentAcount}">
-				<li class="fieldcontain">
-					<span id="parentAcount-label" class="property-label"><g:message code="acount.parentAcount.label" default="Parent Acount" /></span>
-					
-						<span class="property-value" aria-labelledby="parentAcount-label"><g:fieldValue bean="${acountInstance}" field="parentAcount"/></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${acountInstance?.password}">
 				<li class="fieldcontain">
 					<span id="password-label" class="property-label"><g:message code="acount.password.label" default="Password" /></span>

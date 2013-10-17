@@ -26,13 +26,15 @@
 					
 						<th><g:message code="post.acount.label" default="Acount" /></th>
 					
+						<g:sortableColumn property="no" title="${message(code: 'post.no.label', default: 'No')}" />
+					
 						<g:sortableColumn property="operater" title="${message(code: 'post.operater.label', default: 'Operater')}" />
+					
+						<g:sortableColumn property="parentPost" title="${message(code: 'post.parentPost.label', default: 'Parent Post')}" />
 					
 						<g:sortableColumn property="postName" title="${message(code: 'post.postName.label', default: 'Post Name')}" />
 					
 						<th><g:message code="post.role.label" default="Role" /></th>
-					
-						<g:sortableColumn property="unit" title="${message(code: 'post.unit.label', default: 'Unit')}" />
 					
 					</tr>
 				</thead>
@@ -42,13 +44,15 @@
 					
 						<td><g:link action="show" id="${postInstance.id}">${fieldValue(bean: postInstance, field: "acount")}</g:link></td>
 					
+						<td>${fieldValue(bean: postInstance, field: "no")}</td>
+					
 						<td>${fieldValue(bean: postInstance, field: "operater")}</td>
+					
+						<td>${fieldValue(bean: postInstance, field: "parentPost")}</td>
 					
 						<td>${fieldValue(bean: postInstance, field: "postName")}</td>
 					
 						<td>${fieldValue(bean: postInstance, field: "role")}</td>
-					
-						<td>${fieldValue(bean: postInstance, field: "unit")}</td>
 					
 					</tr>
 				</g:each>

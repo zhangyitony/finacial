@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName= "this_public_finance_fund" chTableName="本级财政投资公租房资金统计表9" identifier ="table9" cycle="3">
+		<params name =	"customFileds">
+			<param name="year" value="年度" type="string"></param>
+			<param name="budget_arrangement" value="预算安排">
+				<param name="ba_sum" value="合计" type="big_decimal"></param>
+				<param name="ba_arrange" value="预算安排" type="big_decimal"></param>
+				<param name="ba_onlyprofit" value="土地出让净收益" type="big_decimal"></param>
+				<param name="ba_solve" value="城六区上解" type="big_decimal"></param>
+				<param name="ba_increaseprofit" value="公积金增值收益" type="big_decimal"></param>
+				<param name="ba_price_distance" value="经适房差价款" type="big_decimal"></param>
+				<param name="ba_local_bonus" value="地方债券" type="big_decimal"></param>
+				<param name="ba_others" value="其它资金" type="big_decimal"></param>
+			</param>
+			<param name="fact_investment" value="实际投入">
+				<param name ="fi_sum" value="合计" type="big_decimal"></param>
+				<param name ="fi_budget_arrangement" value="预算安排" type="big_decimal"></param>
+				<param name ="fi_onlyprofit" value="土地出让净收益" type="big_decimal"></param>
+				<param name ="fi_solve" value="城六区上解" type="big_decimal"></param>
+				<param name ="fi_increseprofit" value="公积金增值收益" type="big_decimal"></param>
+				<param name ="fi_price_distance" value="经济房差价款" type="big_decimal"></param>
+				<param name ="fi_local_bonus" value="地方债券" type="big_decimal"></param>
+				<param name ="fi_others" value="其它资金" type="big_decimal"></param>
+			</param>
+
+		</params>
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>		
+	</table>

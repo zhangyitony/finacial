@@ -2,11 +2,19 @@
 <html>
 	<head>
 	<link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all.css')}"/>
-    <link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all-neptune.css')}" />
+	<link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/MultiGrouping.css')}"/>
+<%--    <link rel="stylesheet" href="${createLinkTo(dir:'js',file:'extjs/resources/css/ext-all-neptune.css')}" />--%>
 <%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/bootstrap.js')}"></script>--%>
 <%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/ext-all.js')}"></script>--%>
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/ext-all-dev.js')}"></script>
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/locale/ext-lang-zh_CN.js')}"></script>
+		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/src/grid/feature/MultiGrouping.js')}"></script>
+		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/src/grid/feature/MultiGroupingSummary.js')}"></script>
+		
+<%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'feature/MultiGrouping.js')}"></script>--%>
+<%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'feature/MultiGroupingSummary.js')}"></script>--%>
+<%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'feature/ext-patch-4.2.x.js')}"></script>--%>
+<%--		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'feature/MultiGrouping.css')}"></script>--%>
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'makeJson.js')}"></script>
 		<title>主界面</title>
 <%--        <style type="text/css">--%>
@@ -22,7 +30,7 @@
 			var del_id_list=["ss"];
 			var editstore;
 			var plan_time_id;
-			
+			var combostore;  //项目类型下拉框的store
 			//生成日期的函数。返回值为年-月-日
 			function GetDateT()
 			{
@@ -39,15 +47,28 @@
 				 Ext.Ajax.request({
 					 url:'/test/table/select/'+json.tableId,
 					 method:'POST',
+					 params:{
+						 command:"iminterim",
+						 commandNo:0
+							 },
 					 success:function(response){
 						 console.log(response.responseText);
 	                     var result=makeJson(response.responseText);
+						 console.log(result);
+	                     
 						 editstore = Ext.create('Ext.data.Store', {  
 										fields:result.fieldsNames,
 										data:result.data,
-										autoLoad:true          
+										groupers: result.levelArr,
+										autoLoad:true
 							}); 
-						Ext.getCmp("editgrid").reconfigure(editstore,result.columModle);  //定义grid的store和column   
+						 addlinestore = Ext.create('Ext.data.Store', {  
+								fields:result.fieldsNames,
+								data:[],
+								autoLoad:true          
+							});
+						 Ext.getCmp("addLineGrid").reconfigure(addlinestore,result.columModle1);  //定义grid的store和column   
+					     Ext.getCmp("editGrid").reconfigure(editstore,result.columModle);  //定义grid的store和column   
 					}
 			     });
 				table_id=json.tableId;
@@ -57,14 +78,15 @@
 				Ext.getCmp('gridinfId').body.update(gridinf);
 				Ext.getCmp('center').layout.setActiveItem(4);
 			};
-
+			//生成审核报表的URL  例如：/test/table/select/'+json.tableId
 			function generatAuditURL(json){
 				Ext.Ajax.request({
 					 url:'/test/table/select/'+json.tableId,
 					 method:'POST',
 					 params:{
-						 audit:true
-					 },
+						 command:"audit",
+						 commandNo:1
+							 },
 					 success:function(response){
 						 console.log(response.responseText);
 	                     var result=makeJson(response.responseText);
@@ -72,10 +94,11 @@
 										fields:result.fieldsNames,
 										data:result.data,
 										autoLoad:true          
-							}); 
-						Ext.getCmp("auditGrid").reconfigure(auditstore,result.columModle);  //定义grid的store和column   
-					}
+							});
+						Ext.getCmp("auditGrid").reconfigure(auditstore,result.columModle);  //定义grid的store和column
+						}
 			     });
+				table_id=json.tableId;
 				/*table_id=json.tableId;
 				plan_time_id = json.id;
 				gridinf ="<div >&emsp;<big>表"+json.tableId+": "+json.name+"</big></div>"+
@@ -83,11 +106,15 @@
 				Ext.getCmp('gridinfId').body.update(gridinf);*/
 				Ext.getCmp('center').layout.setActiveItem(6);
 			}
+			//返回选择行的ID
 			var getLastCorrectNumber = function(inputString) {
 			    if(inputString.indexOf('-record') == -1) {
 				   return inputString.substr(inputString.lastIndexOf('-')+1);
 			    }
 			};
+			//Ext.Loader.setPath('Ext.ux', '../ux');
+			Ext.require('feature.multigrouping') ;
+			Ext.Loader.setPath('Ext.grid.feature', '/test/static/js/extjs/src/grid/feature/');
 		    Ext.onReady(function(){
 				//生成填报表格的超链接
 				function generatFillHref(str){
@@ -114,7 +141,7 @@
 					auditHref = "<big>要审核的表格名称</big><blockquote>";
 					for(var i in json) {
 							str = Ext.JSON.encode(json[i]);
-							auditHref += "<div><a href ='javascript:generatAuditURL("+str+")'>"+json[i].time+json[i].name+"  (表:"+json[i].tableId+")</a></div> <br>";
+							auditHref += "<div><a href ='javascript:generatAuditURL("+str+")'>"+json[i].name+"  (表:"+json[i].tableId+")</a></div> <br>";
 					}
 					auditHref += "</blockquote>";
 				};
@@ -125,7 +152,7 @@
 						 method:'POST',
 						 success:function(response){
 						 	var str = response.responseText;
-						 	//console.log(str);
+<%--						 	alert(str);--%>
 						 	generatFillHref(str);
 						 	Ext.getCmp('tianbao_1').body.update(fillHref);
 						 	Ext.getCmp('tianbao_2').body.update(fillHref1);
@@ -133,39 +160,42 @@
 					})
 				 	center.layout.setActiveItem(1);
 				};
-				
-				//主菜单四大功能按钮										
+
+				//主菜单四大功能按钮								
 	 			var bar = Ext.create(Ext.toolbar.Toolbar,{
+		 			id:'bar',
 	 				//style: 'background-color:C4E8FD;', 
 					items:[
-					   Ext.create("Ext.button.Button",{
+					   Ext.create("Ext.button.Button",{						 
 						   	text:"首页",
-						   	width:200,
+						   	width:150,
 						   	handler:function(){ center.layout.setActiveItem(0);	}
 					   }),
 					   Ext.create("Ext.button.Button",{
+						   itemId:'tianbao',
 						 	text:"填报表格",
-						 	width:200,
+						 	width:150,
 						 	handler:formButtonHandler						   						 	
 					   }),
 					   Ext.create("Ext.button.Button",{
+						   itemId:'liulan',
 							text:"浏览报表",
-							width:200,
+							width:150,
 							handler:function(){			   	
 							   	   center.layout.setActiveItem(5);//跳转到check
 							}
 						}),
 						Ext.create("Ext.button.Button",{
+							itemId:'shenhe',
 							//hidden:true,
 							text:"审核新表",
-							width:200,
+							width:150,
 							handler:function(){
 								Ext.Ajax.request({
 									 url:'/test/mockMainDisplay/getShouldAuditTables',
 									 method:'POST',
 									 success:function(response){
 									 	var str = response.responseText;
-									 	alert(str);
 									 	generatAuditHref(str);
 									 	Ext.getCmp('shenhe').body.update(auditHref);
 									 }
@@ -174,30 +204,55 @@
 							}
 						}),					
 						Ext.create("Ext.button.Button",{
+							itemId:'chaxun',
 							//hidden:true,
 							text:"查询分析",
-							width:200,
+							width:150,
 							handler:function(){
 								center.layout.setActiveItem(3);
 							}
 						})										
-					]
+					],
+					listeners:{
+						beforerender:function(){
+						   //alert("hehe");
+						   //alert("${session.acountPost.roleId}  ${session.acountPost}");
+						   //alert("${session.acountPost.operater}");
+							if(${session.acountPost.roleId}==4){//建设单位
+								Ext.getCmp("bar").getComponent("shenhe").setVisible(false);
+								Ext.getCmp("bar").getComponent("chaxun").setVisible(false);
+							}else if(${session.acountPost.roleId}==3 || ${session.acountPost.roleId}==2){
+								Ext.getCmp("bar").getComponent("chaxun").setVisible(false);
+                                if("${session.acountPost.operater}"=="tby"){
+    								Ext.getCmp("bar").getComponent("shenhe").setVisible(false);
+								}else if("${session.acountPost.operater}"=="shy"){
+									Ext.getCmp("bar").getComponent("tianbao").setVisible(false);
+								}
+							}else if(${session.acountPost.roleId}==1){
+                                if("${session.acountPost.operater}"=="tby"){
+    								Ext.getCmp("bar").getComponent("shenhe").setVisible(false);
+								}else if("${session.acountPost.operater}"=="shy"){
+									Ext.getCmp("bar").getComponent("tianbao").setVisible(false);
+								}
+							}							
+					    }
+					}
 			  });//主菜单四个功能按钮结束
 
 		   //logo	  
 	       var logopanel = Ext.create('Ext.panel.Panel', {
-		    	bodyStyle:{background:'url(/test/static/images/title.jpg)' }, 
+		    	bodyStyle:{background:'url(/test/static/images/title1.jpg)' }, 
 		    	//height:200,
 				layout:'absolute',
 				//baseCls: 'my-panel-no-border',
 		        items:[ 
-					   {x:1100,y:50,width:250,xtype:'label',text: '当前用户: ${session.acount.acountName} ${session.acountPost.postName}'},	
+					   {x:document.body.clientWidth*0.75,y:30,width:250,xtype:'label',text: '当前用户: ${session.acount.acountName} ${session.acountPost.postName}'},	
 					   Ext.create("Ext.button.Button",{
 						   region:'south',
-						   width:100,
+						   width:70,
 						   height:30,
-						   x:1100,
-						   y:90,
+						   x:document.body.clientWidth*0.75,
+						   y:80,
 				   	       text:'退出',
 				   	       handler:function(){	
 				   	        	window.location.href="/test/Acount/logout";			   	        
@@ -205,10 +260,10 @@
 			   	        }),
 						   Ext.create("Ext.button.Button",{
 							   region:'south',
-							   width:100,
+							   width:70,
 							   height:30,
-							   x:1230,
-							   y:90,
+							   x:document.body.clientWidth*0.85,
+							   y:80,
 					   	       text:'切换岗位',
 					   	       handler:function(){	
 					   	        	window.location.href="/test/mockMainDisplay/choosePost";			   	        
@@ -257,76 +312,111 @@
 				
 				//填报具体表格
 				 var gridinfPanel=Ext.create('Ext.panel.Panel',{
-					id:'gridinfId',
-					height:100,
-					html:'',
-					bbar:[
-						   {xtype:'button',text:"增加行",
-							handler:function(){
-				                var rec=Ext.create("Ext.data.Store",{
-				                	fields:editgrid.getStore().model.prototype.fields.keys,
-				                	data:[]			
-				                });                
-					   	    	editgrid.getStore().insert(editgrid.getStore().getCount(),rec.data);
-						   	}
-						  },
-						  {xtype:'button',text:"删除行",
-						    handler:function(){
-						   		var selModel = editgrid.getSelectionModel();
-			                    if (selModel.hasSelection()) { 
-			                        Ext.Msg.confirm("警告", "确定要删除吗？", function(button) {  
-			                            if (button == "yes") {
-			                                var selections = selModel.getSelection();  
-			                                Ext.each(selections, function(item) {
-				                                var del_id=getLastCorrectNumber(item.id);
-				                                if(del_id > 0){
-				                                	del_id_list.push(del_id);	
-						                        }
-			                                	editgrid.getStore().remove(item);  
-			                                });  
-			                            }  
-			                        });  
-			                    }  
-			                    else {  
-			                        Ext.Msg.alert("错误", ' </br>无法进行删除操作!');  
-			                    }
-						     } 
-						  }	  
-						]
-				});
+						id:'gridinfId',
+						height:90,
+						html:'',
+						bbar:[
+							   {xtype:'button',text:"增加行",
+								handler:function(){
+									addLineGrid.setVisible(true);
+									editGrid.setVisible(false);
+					                var rec=Ext.create("Ext.data.Store",{
+					                	fields:addLineGrid.getStore().model.prototype.fields.keys,
+					                	data:[]			
+					                });                
+					                addLineGrid.getStore().insert(0,rec.data);
+							   	}
+							  },
+							  {xtype:'button',text:"删除行",
+							    handler:function(){
+							    	var grid = editGrid; 
+							    	if(editGrid.hidden){
+							    		grid = addLineGrid;
+							    	}
+							   		var selModel = grid.getSelectionModel();
+				                    if (selModel.hasSelection()) {
+				                        Ext.Msg.confirm("警告", "确定要删除吗？", function(button) {  
+				                            if (button == "yes") {
+				                                var selections = selModel.getSelection();  
+				                                Ext.each(selections, function(item) {
+					                                var del_id=getLastCorrectNumber(item.id);
+					                                if(del_id > 0){
+					                                	del_id_list.push(del_id);	
+							                        }
+					                                grid.getStore().remove(item);  
+				                                });  
+				                            }  
+				                        });  
+				                    }  
+				                    else {  
+				                        Ext.Msg.alert("错误", ' </br>无法进行删除操作!');  
+				                    }
+							     } 
+							  },
+							  {xtype:'button',text:"增加行完毕",
+									handler:function(){
+										addLineGrid.setVisible(false);
+										editGrid.setVisible(true);
+										if(addLineGrid.getStore().getCount() > 0){
+											Ext.Msg.alert("提示","共有"+addLineGrid.getStore().getCount()+"条数据被添加");
+						                }
+						                for(var i =0;i< addLineGrid.getStore().getCount(); i++ ){
+						                	editGrid.getStore().insert(editGrid.getStore().getCount(),addLineGrid.getStore().getAt(i).data);
+						                }
+						                addLineGrid.getStore().removeAll();
+								   	}
+								}	  
+							]
+					});
+				//填报表格
 				var editGrid=Ext.create("Ext.grid.Panel",{
 			      	    height:450,
-			            id:"editgrid",
+			            id:"editGrid",
+			            hidden :false,
 			            enableColumnHide:false,
 			            enableColumnMove:false,
 			            columnLines:true,
 			            plugins: [{ptype: 'cellediting', clicksToEdit: 2}], 
-			            columns : []  	
+			           	//features:[Ext.create('Ext.grid.feature.MultiGrouping')],
+			           	features:[{ftype: 'multigrouping',
+			           			   startCollapsed : true}],
+			            columns : []
 			      });
-
-			   var auditGrid = Ext.create("Ext.grid.Panel",{
-		      	    height:450,
-		            id:"auditGrid",
-		            enableColumnHide:false,
-		            enableColumnMove:false,
-		            columnLines:true,
-		            //plugins: [{ptype: 'cellediting', clicksToEdit: 2}], 
-		            columns : []  	
-		      });
+			   	  //审核表格
+				  var auditGrid = Ext.create("Ext.grid.Panel",{
+			      	    height:450,
+			            id:"auditGrid",
+			            enableColumnHide:false,
+			            enableColumnMove:false,
+			            columnLines: true,
+			            columns : []
+			      });
+			      //添加行的表格
+			  		var addLineGrid = Ext.create("Ext.grid.Panel",{
+					    height:450,
+					    id:"addLineGrid",
+					    hidden :true,
+			            enableColumnHide:false,
+			            enableColumnMove:false,
+			            columnLines:true,
+			            plugins: [{ptype: 'cellediting', clicksToEdit: 2}], 
+			            columns : [] 
+		           });
 
 				var tianbao2=Ext.create("Ext.panel.Panel",{
 					tbar:[
 					    {text:'返回',handler:function(){ center.layout.setActiveItem(1); } },
 					    {text:'复核',handler:function(){ alert(del_id_list); }},
 					    {text:'存草表',handler:function(){
-					    	var str=unescape(Ext.encode(Ext.pluck(editgrid.getStore().data.items, 'data')).replace(/\\/g, "%") );			    	
+					    	var str=unescape(Ext.encode(Ext.pluck(editGrid.getStore().data.items, 'data')).replace(/\\/g, "%") );			    	
+					    	console.log(str);
 				    		Ext.Ajax.request({
 					 			    url: '/test/table/save',  
 						            params :{
-							            numFuckId:table_id,
+							            formId:table_id,
 							            data_rows:str,
 							            del_rows:del_id_list,
-							            planTime:plan_time_id,
+							            planTimeNo:plan_time_id,
 							            commit:false
 						            },  
 						            method : 'POST',  
@@ -338,19 +428,21 @@
 					       }
 					    },
 					    {text:'上报上级',handler:function(){
-					    	var str=unescape(Ext.encode(Ext.pluck(editgrid.getStore().data.items, 'data')).replace(/\\/g, "%") );			    	
-							alert(str);
+					    	var str=unescape(Ext.encode(Ext.pluck(editGrid.getStore().data.items, 'data')).replace(/\\/g, "%") );
+							console.log(str);
 				    		Ext.Ajax.request({
 					 			    url: '/test/table/save',  
 						            params :{
-							            numFuckId:table_id,
+							            formId:table_id,
 							            data_rows:str,
 							            del_rows:del_id_list,
+							            planTimeNo:plan_time_id,
 							            commit:true
 						            },  
 						            method : 'POST',  
 						            success : function(response) {
 						            	Ext.Msg.alert("成功", '提交上级成功'); 
+						            	center.layout.setActiveItem(1);
 						            }  
 	                			});
 				    		del_id_list=["ss"];
@@ -361,6 +453,7 @@
 					],
 					items:[
 					   gridinfPanel,
+					   addLineGrid,
 					   editGrid
 					]		
 				});//填报具体表格结束
@@ -370,13 +463,13 @@
 				var temp=[];
 				var treeurl='';
 			    function treeinit (){
-				   // alert(${session.acountPost.roleId});
-				    if(${session.acountPost.roleId}==2){
+				    //alert(${session.acountPost.roleId});
+				    if(${session.acountPost.roleId}==2 || ${session.acountPost.roleId}==1){
 				    	treeurl='/test/static/js/cityTree.json';
-					 }else if(${session.acountPost.roleId}==6){
-					    	treeurl='/test/static/js/ccTree.json';
-				     }else{
+					 }else if(${session.acountPost.roleId}==3){
 					    	treeurl='/test/static/js/townTree.json';
+				     }else{//4
+					    	treeurl='/test/static/js/ccTree.json';
 					 }
 			   };
 			   
@@ -407,13 +500,28 @@
 					itemclick:function(view,record,item,index,e){	
 						var store=[];		
 						temp[0]=record.raw.id;
+						var root;
+						switch(record.raw.id){
+						     case "000":root="sbj"; break; //市本级财政汇总
+						     case "001":
+						     case "0010":
+						     case "0011":
+							     root="qx"; break;     //区县/开发区财政汇总
+						     case "002":
+						     case "0020":case "002000":case "002001":case "002002":case "002003":case "002004":case "002005":case "002006":case "002007":case "002008":case "002009":case "002010":case "002011":case "002012":
+						     case "0021":case "00210":case "00211":case "00212":case "00213":case "00214":case "00215":case "00216":case "00217":
+						               root="jsdw"; break;   //建设单位汇总
+						};
+						alert(root);
 						gridstore.setProxy({
 							url:'/test/Browse/findtable',
 							type:'ajax',
 							reader:{
-								type:'json'
+								type:'json',
+								root:root
 							}
 						});
+						gridstore.reload();
 					}
 				}
 			});//树结束
@@ -423,6 +531,7 @@
 	       });
        //选择表
 		  var gridCombo = Ext.create('Ext.form.field.ComboBox', {
+		    width:400,
 		  	emptyText : '请选择表名',
 		  	displayField:"tableName",
             store:gridstore,
@@ -437,7 +546,7 @@
 				            },  
 				            method : 'POST',  
 				            success : function(response) {
-				            	//alert(response.responseText);
+				            	alert(response.responseText);
 				            	var tempjson=Ext.JSON.decode(response.responseText);	
 				            	//alert(tempjson.year)
 				            	var nianstore=[];
@@ -451,7 +560,8 @@
 						            	type:'array'
 						            },
 						            data:nianstore
-					            });			            		
+					            });
+					            yearCombo.getStore().reload();			            		
 			       			     switch(tempjson.cc){
 			       			     case "3":
 			       			            var jidu=[["第一季度"],["第二季度"],["第三季度"],["第四季度"]];
@@ -462,6 +572,7 @@
 							       			  },
 							       			  data:jidu				       			  
 					       			     });
+					       			     monthCombo.getStore().reload();
 					       			    	break;
 			       			     case "6":
 			       			    	var year=[["上半年"],["下半年"]];
@@ -472,6 +583,7 @@
 							       			  },
 							       			  data:year				       			  
 					       			});
+					       			monthCombo.getStore().reload();
 			       			    	break;            			     
 			       			     default:
 			       			        break;			       			          			            	
@@ -484,12 +596,17 @@
       //选择年份内容
       var yearstore=Ext.create("Ext.data.ArrayStore",{
     	   fields:["text"],
-    	   data:[]
+    	   data:[],
        });
        //选择年份
 		  var yearCombo = Ext.create('Ext.form.field.ComboBox', {
 		  	emptyText : '请选择年份',
-            store:yearstore
+            store:yearstore,
+            listeners:{
+                select:function(combo, records, eOpts){
+                    temp[2]=combo.value;
+                 }
+            }
       });
       //选择季度内容
       var monthstore=Ext.create("Ext.data.ArrayStore",{
@@ -499,10 +616,24 @@
        //选择季度
 		  var monthCombo = Ext.create('Ext.form.field.ComboBox', {
 		  	emptyText : '请选择季度',
-           store:monthstore
+           store:monthstore,
+           listeners:{
+    	        select:function(combo, records, eOpts){
+    	            temp[3]=combo.getStore().find("text",combo.value);
+                    //alert(temp[3]);
+                 }
+    	   }
       });
       
-			var checkgrid=Ext.create("Ext.panel.Panel",{
+      var checkGrid=Ext.create("Ext.grid.Panel",{
+          region:'center',
+           id:'checkGrid',
+           columns:[],
+           store:[]        
+      });
+      
+			var checkpanel=Ext.create("Ext.panel.Panel",{
+			   layout:'border',
 				region:'center',
 				tbar:[
 				   gridCombo,
@@ -522,7 +653,7 @@
 					              //alert(temp[0]+temp[1]+temp[2]+temp[3]);
 					              //alert(response.responseText);
 					              var json=makeJson(response.responseText);
-					              //alert(json);						               
+					              //alert(json.fieldsNames);						               
 					              var store = Ext.create('Ext.data.Store', {  
 						                 fields : json.fieldsNames,//把json的fieldsNames赋给fields  
 						                 data : json.data          //把json的data赋给data  
@@ -535,6 +666,7 @@
 				   {text:'导出为excel'}
 				],
 				items:[
+				     checkGrid
 				]
 			});	
 						
@@ -542,7 +674,7 @@
                layout:'border',
 				items:[
 				   tree,
-				   checkgrid
+				   checkpanel
 				]
 			});//查看表结束
 			
@@ -554,31 +686,51 @@
 				       }
 				    },
 				    {text:'接收',handler:function(){
-					    	var str=unescape(Ext.encode(Ext.pluck(editgrid.getStore().data.items, 'data')).replace(/\\/g, "%") );			    	
+					    	var str=unescape(Ext.encode(Ext.pluck(auditGrid.getStore().data.items, 'data')).replace(/\\/g, "%") );	
 				    		Ext.Ajax.request({
 					 			    url: '/test/table/acceptData',  
 						            params :{
-							            numFuckId:table_id,
+							            formId:table_id,
 							            data_rows:str
 						            },  
 						            method : 'POST',  
 						            success : function(response) {
 						            	Ext.Msg.alert("成功", '接收成功！</br>FUCK F--U--C--K！'); 
+						            	Ext.Ajax.request({
+											 url:'/test/mockMainDisplay/getShouldAuditTables',
+											 method:'POST',
+											 success:function(response){
+											 	var str = response.responseText;
+											 	generatAuditHref(str);
+											 	Ext.getCmp('shenhe').body.update(auditHref);
+											 }
+										});
+						            	center.layout.setActiveItem(2);
 						            }  
 	                			});	
 					       }
 				    },
 				    {text:'拒绝',handler:function(){
-					    	var str=unescape(Ext.encode(Ext.pluck(editgrid.getStore().data.items, 'data')).replace(/\\/g, "%") );			    	
+					    	var str=unescape(Ext.encode(Ext.pluck(auditGrid.getStore().data.items, 'data')).replace(/\\/g, "%") );			    	
 				    		Ext.Ajax.request({
 					 			    url: '/test/table/denyData',  
 						            params :{
-							            numFuckId:table_id,
+							            formId:table_id,
 							            data_rows:str
 						            },  
 						            method : 'POST',  
 						            success : function(response) {
 						            	Ext.Msg.alert("成功", '拒绝成功！</br>FUCK F--U--C--K！'); 
+						            	Ext.Ajax.request({
+											 url:'/test/mockMainDisplay/getShouldAuditTables',
+											 method:'POST',
+											 success:function(response){
+											 	var str = response.responseText;
+											 	generatAuditHref(str);
+											 	Ext.getCmp('shenhe').body.update(auditHref);
+											 }
+										});
+						            	center.layout.setActiveItem(2);
 						            }  
 	                			});	
 					       }
@@ -595,15 +747,104 @@
 				 html:''
 			});//审核界面结束
 			
-			
+			//查询界面
+			var chaxunStore;
+			var temp=[];
+			var chaxunGrid=Ext.create("Ext.grid.Panel",{
+			     id:'chaxunGrid',
+			    title:'sdf',
+			    columns:[],
+			    store:chaxunStore,
+				viewConfig : {forceFit : true,
+				      getRowClass:function(record,index,p,ds) {
+				             var cls = 'white-row';
+				             //alert("haha");
+				             console.log(record);
+				             console.log(index);
+				             console.log(ds);
+					         return cls;
+				     }
+				}
+			});
+			var chaxunGridstore=Ext.create("Ext.data.ArrayStore",{
+			   fields:["id","gridName"],
+			   data:[[1,'表一'],[2,'表二'],[3,'表三']]
+			});
+			var chaxunYearstore=Ext.create("Ext.data.ArrayStore",{
+			   fields:["text"],
+			   data:[["2013"]]
+			});
 			var chaxun=Ext.create("Ext.panel.Panel",{
-				 html:"chaxun"
+			  //layout:'border',
+			   tbar:[
+					Ext.create('Ext.form.field.ComboBox', {
+					      width:400,
+						   emptyText : '请选择表名',
+						   displayField:"gridName",
+				           store:chaxunGridstore,
+				           listeners:{
+				    	        select:function(combo, records, eOpts){
+				    	            temp[0]=combo.getStore().findRecord("gridName",combo.value).raw[0];
+				    	           // alert(temp[0]);
+				                 }
+				    	   }
+				      }),
+				     Ext.create('Ext.form.field.ComboBox', {
+						   emptyText : '请选择年份',
+				           store:chaxunYearstore,
+				           listeners:{
+				    	        select:function(combo, records, eOpts){
+				    	            //alert(combo.value);
+				    	            temp[1]=combo.value;
+									Ext.Ajax.request({
+						 			    url: '/test/static/js/chaxun.json',  
+						 			    params:{						 			        
+						 			    },
+							            method : 'POST',  
+							            success : function(response) {
+							            	//alert(response.responseText);
+							            	var json=Ext.JSON.decode(response.responseText);
+										    var store = Ext.create('Ext.data.Store', {  
+									                 fields : json.fieldsNames,//把json的fieldsNames赋给fields  
+									                 data : json.data          //把json的data赋给data  
+								             });  
+							            	chaxunStore=store;
+							            	for(var i in chaxunStore.data.items){//行循环
+							            	       //alert(i);
+							            	       //console.log(chaxunStore.data.items[i]);
+							            	       var flag1=0;
+							            	       var flag2=0;
+							            	       for(var j in chaxunStore.data.items[i].data){//每一列循环
+							            	           if(flag1==0){
+							            	                flag1=1;
+							            	                continue;
+							            	           }
+							            	           //alert(j);
+							            	           //alert(chaxunStore.data.items[i].data[j]);
+							            	           if(chaxunStore.data.items[i].data[j]!=""){
+							            	               flag2=1;   //有数据行
+							            	               break;
+							            	           }
+							            	           //设置改行字体
+							            	           							            	           
+							            	       }
+							            	};
+							            	Ext.getCmp("chaxunGrid").reconfigure(chaxunStore, json.columnsModel); 
+							            }  
+		                			});									    								    
+				                 }
+				    	   }
+				      })
+			    ],
+				items:[	
+				       chaxunGrid		      
+				 ]
 			});
 			
 			//主区域定义			
 			var center=Ext.create("Ext.panel.Panel",{
 				id:'center',
-				height:800,
+				height:1000,
 				layout:'card',
 				items:[
 				   shouye,
@@ -616,12 +857,14 @@
 				]
 			});				
 			var main=Ext.create("Ext.panel.Panel",{
+			   //width:1000,
+			   //height:1000,
 				renderTo:Ext.getBody(),
 				items:[
 				   top,
 				   center
 				]
-			})//主区域定义结束								
+			})//主区域定义结束							
 		});
 	</script>
 </head>

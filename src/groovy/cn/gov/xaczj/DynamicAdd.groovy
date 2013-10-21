@@ -63,9 +63,7 @@ class DynamicAdd {
 		table1.putAt(node.attribute("name"), param);
 		return table1;
 	}
-	
-	
-	
+
 	private  outputChildren( node, level,table1,HashMap<String,String> fileds,int cnt)
 	{
 		def param = new Expando();

@@ -6,7 +6,7 @@ class CheckJob {
     static triggers = {
 
 //		simple repeatInterval: 5000l // execute job once in 5 seconds
-		/*ÓÃÓÚÄ£Äâ*/
+		/*ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½*/
 		cron name: 'myTrigger', cronExpression: "0 0 0 15 * ?"
 		    }
 	def dynamic;
@@ -17,20 +17,21 @@ class CheckJob {
 	static now_month=0
 	static now_year=0
     def execute() {
-        // execute job
+		
 		def tableList = dynamic.getTableList();
-		def tablenum =tableList.size();		
+		def tablenum =tableList.size();
+		
 		def cal=Calendar.getInstance()
-		def now_month=cal.get(Calendar.MONTH)
-		def now_year=cal.get(Calendar.YEAR)
-		//def check_token=Record.findByYearAndMonth(now_year,now_month)
-		//if(check_token)
-		//	return ;
-		/*ÓÃÓÚÄ£Äâ*/
+		Calendar cac
+		def now_month=cal.get(Calendar.MONTH)+1
+		def now_year=cal.get(Calendar.YEAR)	
+//		println("${now_month},${now_year}")
+		def count=1
 		def listnum=Record.list()
 		def listnum_id=listnum.size()
+//		println(listnum)
 		def record_lastDate=Record.get(listnum_id)
-
+//		println(record_lastDate)
 		Date now_date=new Date();
 //		now_month++
 //		if (now_month==12)
@@ -38,54 +39,80 @@ class CheckJob {
 //			now_month=1;
 //			now_year++;
 //		}
-		/*ÓÃÓÚÄ£Äâ*/
-		def y_months=(record_lastDate.year-now_year)*12+record_lastDate.month-now_month
-		def cc
-while(y_months>0)
-	{		
-		while (count<=tablenum)
-		{
-			TableDynamic td = tableList.get(count-1);
-			cc = Integer.parseInt(td.cycle);
-			if(((now_year-start_year)*12+(now_month-start_month))%cc==0&&cc!=0)
-			{
-				def whynot=Authority.createCriteria()
-				def need_id_list=whynot.list
-				{
-					form{
-						eq("no",count)
-						}
-				}
-				if(need_id_list.size()>0)
-				{
-					for(i in 0..need_id_list.size()-1)
-					{
-						println need_id_list[i]
-						def plan_times=new PlanTime()
-						def recordTime=new Record()
-						recordTime.record_time=now_date
-						plan_times.tableId=count
-						plan_times.planTime=cal.getTime()
-						plan_times.acountId=need_id_list.get(i).acountId
-						plan_times.save()
-					}
-				}
-																																					
-			}
-		count++
-		}
-		println("cry"+(n++)+" "+now_date.toLocaleString())	
+		/*ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½*/
 		
-		now_month--	
-		if(!now_month)
+		def y_months
+		if (listnum_id!=0)
 			{
-				now_month=12
-				now_year--
+				y_months=(now_year-record_lastDate.year)*12+now_month-record_lastDate.month
+//				println("-----"+((now_year-record_lastDate.year)*12+now_month-record_lastDate.month))
 			}
-		cal.set(Calendar.YEAR,now_year)
-		cal.set(Calendar.MONTH,now_month)
+		else{
+			y_months=1
+			}
+		def cc
+//		println("chae:="+y_months)
+		while(y_months>0)
+		{
+//			println("1"+count+" "+tablenum)
+			count=1
+			while (count<=tablenum)
+			{
+//				println("2")
+				TableDynamic td = tableList.get(count-1);
+				cc = Integer.parseInt(td.cycle);
+				println("cc:${cc}")
+				if(cc!=0)
+				println("${now_year}-${start_year}-${now_month}-${start_month}-${(((now_year-start_year)*12+(now_month-start_month))%cc==0)}")
+				if(cc!=0 && ((now_year-start_year)*12+(now_month-start_month))%cc==0)
+				{																
+					def whynot=Authority.createCriteria()
+					def need_id_list=whynot.list 
+					{
+						and{
+							form{
+								eq("no",count)
+								}	
+							eq("authority",(short)1)
+							}										
+					}
+					//println(need_id_list)
+					if(need_id_list.size()>0)
+					{
+						for(i in 0..need_id_list.size()-1)
+						{
+							//println need_id_list[i]
+							def plan_times=new PlanTime()
+							def recordTime=new Record()
+							cac=Calendar.getInstance()
+							cac.setTime(now_date)
+							recordTime.year=cac.get(Calendar.YEAR)
+							recordTime.month=cac.get(Calendar.MONTH)+1
+							recordTime.save()
+							plan_times.tableId=count
+							plan_times.planTime=cal.getTime()
+							plan_times.postId=need_id_list.get(i).postId
+							plan_times.save()
+						}
+					}														
+																																						
+				}
+			count++								
+			}		
+			println("cry"+(n++)+" "+now_date.toLocaleString())	
+			now_month--
+			if(!now_month)
+				{
+					now_month=12
+					now_year--
+				}
+//			println("year"+now_year+"month"+now_month)
+			cal.set(Calendar.YEAR,now_year)
+			cal.set(Calendar.MONTH,now_month-1)
+			//println(cal)	
+			y_months--
+//			println("sss"+y_months)
+		}
 			
-		y_months--
-    }
 	}
 }

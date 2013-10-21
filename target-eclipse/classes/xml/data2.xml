@@ -1,32 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<table tableName= "this_grade_finance_fund" chTableName="本级财政投资廉租房资金统计表2" identifier ="table2" cycle="3">
+	<table tableName="lowprice_rent_investresource" chTableName="西安市廉租住房建设项目投资来源基本情况统计表2" identifier="table2" cycle="3">
 		<params name =	"customFileds">
-			<param name="year" value="年度" type="string"></param>
-			<param name="budget_arrangement" value="预算安排">
-				<param name="ba_sum" value="总计" type="big_decimal"></param>
-				<param name="ba_onlyprofit" value="土地出让净收益" type="big_decimal"></param>
-				<param name="ba_solve" value="城六区上解" type="big_decimal"></param>
-				<param name="ba_increaseprofit" value="公积金增值收益" type="big_decimal"></param>
-				<param name="ba_price_distance" value="经适房差价款" type="big_decimal"></param>
-				<param name="ba_local_bonus" value="地方债券" type="big_decimal"></param>
-				<param name="ba_others" value="其它资金" type="big_decimal"></param>
+			<param name ="level1" value="项目大类" type="string"></param>
+			<param name ="level2" value="项目小类" type="string"></param>	
+			<param name = "proj_name" value="项目名称" type="string" ></param>
+			<param name = "year" value="本年度" type="string">
+				<param name = "plan_finance_fund" value="财政资金支出预算" >
+					<param name = "pff_sum" value ="合计" type ="big_decimal"></param>
+					<param name = "pff_center" value ="中央" type ="big_decimal"></param>
+					<param name = "pff_province" value ="省" type ="big_decimal"></param>
+					<param name = "pff_city" value ="区县" type ="big_decimal"></param>
+				</param>
+				<param name ="sum_investresource" value ="投资来源合计" type ="big_decimal"></param>
+				<param name ="number_construct" value ="财政资金实际拨入建设单位数" >
+					<param name ="nc_sum" value ="合计" type = "big_decimal"></param>
+					<param name ="nc_center" value = "中央" type ="big_decimal"></param>
+					<param name ="nc_province" value ="省" type ="big_decimal"></param>
+					<param name ="nc_city" value ="市" type ="big_decimal"></param>
+					<param name ="nc_town" value ="区县" type ="big_decimal"></param>
+				</param>
+				<param name ="others_investment" value ="其它投资">
+					<param name ="oi_sum" value ="合计" type ="big_decimal"></param>
+					<param name ="oi_borrw" value ="当年银行借款" type = "big_decimal"></param>
+					<param name ="oi_return" value ="当年还款" type ="big_decimal"></param>
+					<param name ="oi_surplus" value ="期末银行余额" type ="big_decimal"></param> 
+					<param name ="oi_others" value = "其它资金" type ="big_decimal"></param>
+				</param>
 			</param>
-			<param name="fact_investment" value="实际投入">
-				<param name ="fi_sum" value="合计" type="big_decimal"></param>
-				<param name ="fi_budget_arrangement" value="预算安排" type="big_decimal"></param>
-				<param name ="fi_onlyprofit" value="土地出让净收益" type="big_decimal"></param>
-				<param name ="fi_solve" value="城六区上解" type="big_decimal"></param>
-				<param name ="fi_increseprofit" value="公积金增值收益" type="big_decimal"></param>
-				<param name ="fi_price_distance" value="经济房差价款" type="big_decimal"></param>
-				<param name ="fi_local_bonus" value="地方债券" type="big_decimal"></param>
-				<param name ="fi_others" value="其它资金" type="big_decimal"></param>
+			<param name = "accumulate" value="累计数" type="string">
+				<param name = "a_plan_finance_fund" value="财政资金支出预算" >
+					<param name = "a_pff_sum" value ="合计" type ="big_decimal"></param>
+					<param name = "a_pff_center" value ="中央" type ="big_decimal"></param>
+					<param name = "a_pff_province" value ="省" type ="big_decimal"></param>
+					<param name = "a_pff_city" value ="区县" type ="big_decimal"></param>
+				</param>
+				<param name ="a_sum_investresource" value ="投资来源合计" type ="big_decimal"></param>
+				<param name ="a_number_construct" value ="财政资金实际拨入建设单位数" >
+					<param name ="a_nc_sum" value ="合计" type = "big_decimal"></param>
+					<param name ="a_nc_center" value = "中央" type ="big_decimal"></param>
+					<param name ="a_nc_province" value ="省" type ="big_decimal"></param>
+					<param name ="a_nc_city" value ="市" type ="big_decimal"></param>
+					<param name ="a_nc_town" value ="区县" type ="big_decimal"></param>
+				</param>
+				<param name ="a_others_investment" value ="其它投资">
+					<param name ="a_oi_sum" value ="合计" type ="big_decimal"></param>
+					<param name ="a_oi_borrw" value ="当年银行借款" type = "big_decimal"></param>
+					<param name ="a_oi_return" value ="当年还款" type ="big_decimal"></param>
+					<param name ="a_oi_surplus" value ="期末银行余额" type ="big_decimal"></param> 
+					<param name ="a_oi_others" value = "其它资金" type ="big_decimal"></param>
+				</param>
 			</param>
-
+			<param name ="construction_company" value ="建设单位拨付代建单位">
+				<param name ="cc_year" value="本年拨款">
+					<param name ="ccy_sum" value="拨付总额" type="big_decimal"></param>
+					<param name ="ccy_finance_fund" value ="财政资金" type="big_decimal"></param>
+				</param>
+				<param name ="cc_accumulate" value="累计拨款">
+					<param name ="cca_sum" value="拨付总额" type="big_decimal"></param>
+					<param name ="cca_finance_fund" value ="财政资金" type="big_decimal"></param>
+				</param>
+			</param>
+			<param name ="operation_company" value ="拨付施工企业">
+				<param name ="oc_year" value="本年拨款">
+					<param name ="ocy_sum" value="拨付总额" type="big_decimal"></param>
+					<param name ="ocy_finance_fund" value ="财政资金" type="big_decimal"></param>
+				</param>
+				<param name ="oc_accumulate" value="累计拨款">
+					<param name ="oca_sum" value="拨付总额" type="big_decimal"></param>
+					<param name ="oca_finance_fund" value ="财政资金" type="big_decimal"></param>
+				</param>
+			</param>
+			<param name ="surplus_final_construction_fund" value = "建设单位资金结余">
+				<param name ="sfcf_sum" value="总额" type = "big_decimal"></param>
+				<param name ="sfcf_fund" value="财政资金" type ="big_decimal"></param>
+			</param>
+			<param name ="replace_company" value ="代建单位资金结余">
+				<param name ="rc_sum" value="总额" type = "big_decimal"></param>
+				<param name ="rc_fund" value="财政资金" type ="big_decimal"></param>
+			</param>
+			<param name ="comment" value ="备注" type="string"></param>
 		</params>
+
 		<operate result = "sum">
 	 		<operator name="-">
 	 			<num name="investgatePlan"></num>
 	 			<num name="loan"></num>
 			</operator>
-	 	</operate>		
-	</table>
+	 	</operate>
+	 </table>

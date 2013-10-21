@@ -13,6 +13,7 @@ package cn.gov.xaczj.domain;
 	 private int receivePost;
 	 private short status;
 	 private Date planTime;
+	 private int planTimeNo;//存储计划表中的记录号
 	 public int getId() {
 	     return id;
 	 }
@@ -53,13 +54,6 @@ package cn.gov.xaczj.domain;
 		this.status = status;
 	}
 
-	public Date getPlanTime() {
-		return planTime;
-	}
-
-	public void setPlanTime(Date planTime) {
-		this.planTime = planTime;
-	}
 
 	public int getReceivePost() {
 		return receivePost;
@@ -67,6 +61,22 @@ package cn.gov.xaczj.domain;
 
 	public void setReceivePost(int receivePost) {
 		this.receivePost = receivePost;
+	}
+
+	public int getPlanTimeNo() {
+		return planTimeNo;
+	}
+
+	public void setPlanTimeNo(int planTimeNo) {
+		this.planTimeNo = planTimeNo;
+	}
+
+	public Date getPlanTime() {
+		return planTime;
+	}
+
+	public void setPlanTime(Date planTime) {
+		this.planTime = planTime;
 	}
 
 	

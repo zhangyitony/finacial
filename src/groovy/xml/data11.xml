@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName= "public_rent_sum" chTableName="西安市社会租赁保障房（公租房）基本情况统计汇总表11" identifier ="table11" cycle="3">
+		<params name =	"customFileds">
+			<param name="community_name" value="租赁房小区名称" type="string"></param>
+			<param name="rent_num" value="租赁套数">
+				<param name="rn_l50" value="50平方米以下">
+					<param name="rnl_num" value="套数" type="integer"></param>
+					<param name="rnl_area" value="面积" type="big_decimal"></param>
+				</param>
+				<param name="rn_h50" value="50平方米以上">
+					<param name="rnh_num" value="套数" type="integer"></param>
+					<param name="rnh_area" value="面积" type="big_decimal"></param>
+				</param>
+				<param name="allowance_l50" value="租金补贴（50平方米以下）">
+					<param name="al_allocated" value="已分配">
+						<param name="ala_num" value="套数" type="integer"></param>
+						<param name="ala_hand_in" value="保障户应缴租金" type="integer"></param>
+						<param name="ala_pay" value="应付出租户租金" type="big_decimal"></param>
+						<param name="ala_supply" value="应补租金" type="big_decimal"></param>
+					</param>
+					<param name="al_free" value="空置房">
+						<param name="alf_num" value="套数" type="integer"></param>
+						<param name="alf_num" value="应付出租户租金" type="big_decimal"></param>
+					</param>
+				</param>
+				<param name="allowance_h50" value="租金补贴（50平方米以上）">
+					<param name="ah_allocated" value="已分配">
+						<param name="aha_num" value="套数" type="integer"></param>
+						<param name="aha_hand_in" value="保障户应缴租金" type="integer"></param>
+						<param name="aha_pay" value="应付出租户租金" type="big_decimal"></param>
+						<param name="aha_supply" value="应补租金" type="big_decimal"></param>
+					</param>
+					<param name="ah_free" value="空置房">
+						<param name="ahf_num" value="套数" type="integer"></param>
+						<param name="ahf_num" value="应付出租户租金" type="big_decimal"></param>
+					</param>
+				</param>
+			</param>
+			<param name="supply_rent_money" value="应补租金" type="big_decimal"></param>
+			
+		</params>
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>		
+	</table>

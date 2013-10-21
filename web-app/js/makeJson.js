@@ -1,4 +1,18 @@
 
+Ext.define('Ext.form.field.dec', {
+    extend:'Ext.form.field.Number',
+    alias: 'widget.decnum',
+    alternateClassName: ['Ext.form.decnum'],
+    decimalPrecision : 8
+})
+Ext.define('Ext.form.field.itg', {
+    extend:'Ext.form.field.Number',
+    alias: 'widget.itgnum',
+    alternateClassName: ['Ext.form.itgnum'],
+    allowDecimals : false
+})
+    
+
 function makeTextClean(str){
 			str = str.replace(/\s/g,"");
 			str = str.replace(/\n/g,"");
@@ -11,6 +25,13 @@ function makeTextClean(str){
 function makeColumJson(json,arr,jsonx){
 	
 	for(var i in json) {
+		if(i.indexOf('level') != -1){
+			continue;
+		}
+		if(i.indexOf('ap_proj_name')!= -1){
+			arr.push("{\"text\":\""+json[i]+"\",\"locked\": true,\"dataIndex\":\""+i+"\",\"editor\":\"textfield\",\"align\":\"center\",\"width\":150}");
+			continue;
+		}
 		if(typeof json[i] == 'object'){
 			if(i == "columModle"){
 				arr.push("{\""+i+"\": [");
@@ -23,34 +44,71 @@ function makeColumJson(json,arr,jsonx){
 			}
 		}else 
 		{
-			
-			
-			
-           			 for(var j in jsonx){
-           				
-						if( i==j &&jsonx[j]=="big_decimal"){
-							
-							arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"numberfield\"}");
-						}
-						else if(i==j &&jsonx[j]=="string"){
-							
-							arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"textfield\"}");
-						}
-						else if(i==j &&jsonx[j]=="calendar_date"){
-							
-							arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"datefield\"}");
-						}
-						else if(i==j &&jsonx[j]=="integer"){
-							
-							arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"numberfield\"}");
-						}
-						
-           			 }
-			
-			
-		
-			//arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"textfield\"}");
-			
+   			 for(var j in jsonx){
+   				
+				if( i==j &&jsonx[j]=="big_decimal"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"decnum\",\"align\":\"center\",\"width\":150}");
+				}
+				else if(i==j &&jsonx[j]=="string"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"textfield\",\"align\":\"center\",\"width\":150}");
+				}
+				else if(i==j &&jsonx[j]=="calendar_date"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"datefield\",\"align\":\"center\",\"width\":100}");
+				}
+				else if(i==j &&jsonx[j]=="integer"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"itgnum\",\"align\":\"center\",\"width\":80}");
+				}
+   			 }
+		}
+	}
+}
+
+function makeColumJsonTest(json,arr,jsonx){
+	for(var i in json) {
+		if(i.indexOf('level') != -1){
+			arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"combo\",\"align\":\"center\",\"width\":150}");
+			continue;
+		}
+		if(i.indexOf('ap_proj_name')!= -1){
+			arr.push("{\"text\":\""+json[i]+"\",locked: true,\"dataIndex\":\""+i+"\",\"editor\":\"textfield\",\"align\":\"center\",\"width\":150}");
+			alert("in it");
+			continue;
+		}
+		if(typeof json[i] == 'object'){
+			if(i == "columModle"){
+				arr.push("{\""+i+"\": [");
+				makeColumJsonTest(json["columModle"],arr,jsonx);
+				arr.push("]}");
+			}else {
+				arr.push("{\"text\":\""+i+"\",\"columns\": [");
+				makeColumJsonTest(json[i],arr,jsonx);
+				arr.push("]}");
+			}
+		}else 
+		{
+   			 for(var j in jsonx){
+   				
+				if( i==j &&jsonx[j]=="big_decimal"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"decnum\",\"align\":\"center\",\"width\":150}");
+				}
+				else if(i==j &&jsonx[j]=="string"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"textfield\",\"align\":\"center\",\"width\":150}");
+				}
+				else if(i==j &&jsonx[j]=="calendar_date"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"datefield\",\"align\":\"center\",\"width\":100}");
+				}
+				else if(i==j &&jsonx[j]=="integer"){
+					
+					arr.push("{\"text\":\""+json[i]+"\",\"dataIndex\":\""+i+"\",\"editor\":\"itgnum\",\"align\":\"center\",\"width\":80}");
+				}
+   			 }
 		}
 	}
 }
@@ -82,11 +140,21 @@ function makeColumJson(json,arr,jsonx){
 	
 	function testFun(json){
 		for(var i in json) {
-			document.write(i+":"+json[i]+"</br>");
+			console.log(i+":"+json[i]);
 			if(typeof json[i] == 'object'){
 					testFun(json[i]);
 			}
 		}
+	}
+	//得到分组信息的函数
+	function getLevels(json){
+		var arr=new Array();
+		for(var i in json.columModle){
+			if(i.indexOf('level') != -1){
+				arr.push(i);
+			}
+		}
+		return arr;
 	}
 
 	function makeJson(str){
@@ -95,17 +163,18 @@ function makeColumJson(json,arr,jsonx){
 			var temp={};
 			var stemp={};
 			var strr;
-			temp.columModle = sendJson.columModle;
+			var addLineColsJson = {};
+			temp.columModle = sendJson.columModle;	
 			stemp.type=sendJson.type;     //////////
 			
-			delete sendJson.columModle;
+			delete sendJson["columModle"];
 			
 			str = Ext.JSON.encode(temp);
 			str=unescape(str.replace(/\\/g, "%"));
 			str = makeTextClean(str);
 			
 			var json = Ext.JSON.decode(str);
-			
+			var levelArr = getLevels(json);
 			
 			strr = Ext.JSON.encode(stemp);
 			strr = unescape(strr.replace(/\\/g, "%"));
@@ -114,26 +183,28 @@ function makeColumJson(json,arr,jsonx){
 			
 			var arr= new Array ();
 			var arr1 = new Array();
-			
+			var arr2 = new Array();
 			makeColumJson(json,arr,jsonx["type"]);
+			console.log(arr);
+			
+			makeColumJsonTest(json,arr2,jsonx["type"]);
 			
 			var cols=makeJsonClean(arr);
-			
+			var cols1 = makeJsonClean(arr2);
 			
 			makeFieldsJson(json,arr1);
-			var fieldsName=makeJsonClean(arr1);
-		
 			
-			colsJson = Ext.JSON.decode(cols);
+			var fieldsName=makeJsonClean(arr1);
+			
+			var colsJson = Ext.JSON.decode(cols);
+			var colsJson1 = Ext.JSON.decode(cols1);
+			
 			fieldJson = Ext.JSON.decode(fieldsName);
 			
+			sendJson.columModle1 = colsJson1.columModle;
 			sendJson.columModle = colsJson.columModle;
 			sendJson.fieldsNames = fieldJson.fieldsNames;
-			var xixi= Ext.JSON.encode(sendJson);
-				xixi = unescape(xixi.replace(/\\/g, "%"));
-			//Ext.Msg.alert("xx",xixi);//console.log(sendJson.responseText);
-			
+			sendJson.levelArr = levelArr;
 			
 			return sendJson;
-			
 	}

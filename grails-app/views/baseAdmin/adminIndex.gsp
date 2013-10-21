@@ -82,8 +82,8 @@
 	</head>
 	<body>
 		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="status" role="complementary">
-			<h1>Application Status</h1>
+		<!--<div id="status" role="complementary">
+		  	<h1>Application Status</h1>
 			<ul>
 				<li>App version: <g:meta name="app.version"/></li>
 				<li>Grails version: <g:meta name="app.grails.version"/></li>
@@ -101,16 +101,59 @@
 					<li>${plugin.name} - ${plugin.version}</li>
 				</g:each>
 			</ul>
-		</div>
+		</div>-->
+		
 		<div id="page-body" role="main">
 			<h1>欢迎来到后台管理平台</h1>
 			<p>请点击下列链接进入子模块的管理界面</p>
-
+        <a href=/test/Acount/logout >退出</a>
 			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
+				<h2>子模块列表</h2>
 				<ul>
 					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
+						
+						
+						 <g:if test="${c.fullName == 'test.AcountController'}">
+						  	 <li class="controller">
+							 <g:link controller="${c.logicalPropertyName}">
+									帐号管理
+							 </g:link>
+						</g:if> 
+						
+						<g:elseif test="${c.fullName == 'test.AuthorityController'}">
+							 <li class="controller">
+							 <g:link controller="${c.logicalPropertyName}">
+					     			权限列表
+						 	</g:link>
+						</g:elseif>
+						
+						<g:elseif test="${c.fullName == 'test.FormController'}">
+							<li class="controller">
+							<g:link controller="${c.logicalPropertyName}">
+					     			统计表列表
+						 	</g:link>
+						</g:elseif>
+						
+						<g:elseif test="${c.fullName == 'test.PostController'}">
+							<li class="controller">
+							<g:link controller="${c.logicalPropertyName}">
+                            岗位列表
+						 	</g:link>
+						</g:elseif>
+						<g:elseif test="${c.fullName == 'test.RegistrationController'}">
+							<li class="controller">
+							<g:link controller="${c.logicalPropertyName}">
+					     			注册表
+						 	</g:link>
+						</g:elseif>
+						<g:elseif test="${c.fullName == 'test.RoleController'}">
+							<li class="controller">
+							<g:link controller="${c.logicalPropertyName}">
+					     			 角色列表
+						 	</g:link>
+						</g:elseif>
+						
+						</li>
 					</g:each>
 				</ul>
 			</div>

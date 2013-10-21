@@ -24,6 +24,8 @@ import java.util.Iterator;
              Session session = HibernateUtil.getInstance().getCurrentSession();
              Class<? extends CustomizableEntity> entityClass = entityManager.getEntityClass();
              String file = entityClass.getResource(entityClass.getSimpleName() + ".hbm.xml").getPath();
+//             String file = "/home/tata/Table.hbm.xml";
+
              System.out.println(file);
             
              Document document = XMLUtil.loadDocument(file);

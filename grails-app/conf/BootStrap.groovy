@@ -3,9 +3,10 @@ import java.util.ArrayList;
 import org.hibernate.*
 import org.springframework.web.context.support.WebApplicationContextUtils
 
-import test.Form
+import test.*;
 import cn.gov.xaczj.*;
 import cn.gov.xaczj.domain.*;
+import cn.gov.xaczj.util.*
 import groovy.xml.StreamingMarkupBuilder;
 
 class BootStrap {
@@ -21,9 +22,33 @@ class BootStrap {
 	
     def init = { servletContext ->
 		//可临时注释掉，加快调试		
-					initCustomField();//
+					initCustomField();
+					def a=Acount.findByAcountName("admin")
+					
+//					if(1){
+//						
+//						InitDatabase.imitate();
+//							}
+		
+					
+					if(!a)
+					{
+						InitDatabase.lunch();
+						InitDatabase.old_data()
+						InitDatabase.imitate()
+					}
+						
+					
+					//println("");
 		    }
+	
+	/**
+	 * 建立数据库，首先是role表，之后是form表，在之后acount，在之后post，在之后registration，在之后authority
+	 */
+
+
     def destroy = {
+			
     }
 	
 	/**
@@ -105,9 +130,11 @@ class BootStrap {
 		println(beginTime.getTime());
 		
 		def writer = new PrintWriter (new FileWriter("src/java/cn/gov/xaczj/domain/Table.hbm.xml"),true);
+//		def writer = new PrintWriter (new FileWriter("/home/tata/Table.hbm.xml"),true);
 //		def writer = new FileWriter("src/java/cn/gov/xaczj/domain/Table.hbm.xml");
 		
 	//	def comment = ''' <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "http://svn.compass-project.org/svn/compass/trunk/lib/hibernate/hibernate-mapping-3.0.dtd">'''
+//		def comment = ''' <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "/home/tata/program/hibernate-distribution-3.6.10.Final/hibernate-mapping-3.0.dtd">'''
 		def comment = ''' <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN" "./hibernate-mapping-3.0.dtd">'''
 		int cnt=countXml();
 		def xml = new StreamingMarkupBuilder().bind { 
@@ -131,6 +158,7 @@ class BootStrap {
 						property("column":"receivePost","name":"receivePost","optimistic-lock":"true")
 						property("column":"status","generated":"never","lazy":"false","name":"status","optimistic-lock":"true","type":"short","unique":"false")
 						property("column":"planTime","generated":"never","lazy":"false","name":"planTime","optimistic-lock":"true","type":"date","unique":"false")
+						property("column":"planTimeNo","name":"planTimeNo","optimistic-lock":"true")
 						"dynamic-component"("insert":"true","name":"customProperties","optimistic-lock":"true","unique":"false","update":"true"){}
 					}
 				}

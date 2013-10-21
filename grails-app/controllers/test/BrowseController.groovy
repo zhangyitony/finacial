@@ -50,15 +50,15 @@ class BrowseController {
 		else if(loginPost.unit == "xasczj")	
 		{
 			
-			def qxForms = Registration.findAllByRole(Role.get(4));//ÇøÏØ
+			def qxForms = Registration.findAllByRole(Role.get(4));//ï¿½ï¿½ï¿½ï¿½
 			def qxList = conJson(qxForms);
-			def kfqForms = Registration.findAllByRole(Role.get(4));//¿ª·¢Çø
+			def kfqForms = Registration.findAllByRole(Role.get(4));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			def kfqList = conJson(kfqForms);
-			def sbjForms = Registration.findAllByRole(Role.get(2));//ÊÐ±¾¼¶
+			def sbjForms = Registration.findAllByRole(Role.get(2));//ï¿½Ð±ï¿½ï¿½ï¿½
 			def sbjList = conJson(sbjForms);
-			def jsdwForms = Registration.findAllByRole(Role.get(5));//½¨Éèµ¥Î»
+			def jsdwForms = Registration.findAllByRole(Role.get(5));//ï¿½ï¿½ï¿½èµ¥Î»
 			def jsdwList = conJson(jsdwForms);
-			def xasczjForms=Registration.findAllByRole(Role.get(3));//Î÷°²ÊÐ²ÆÕþ¾Ö
+			def xasczjForms=Registration.findAllByRole(Role.get(3));//ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½
 			def xasczjList=conJson(xasczjForms);
 			render(contentType: "application/json",encoding: "gbk") {
 				qx = qxList;
@@ -71,70 +71,170 @@ class BrowseController {
 	}
 	
 	def findYearCycle()
-
 	{		
 		try 
 		{	
-			String formId=params.formId;
-		//	String formId="1";
-			String chargePost = session.acountPost.no;
-		
-			String hql ="select planTime from table"+"${formId} "+" where receivePost ="+"${chargePost}"
-			def yearlist=[];
-			def years = HibernateUtil.getInstance().getCurrentSession().createQuery(hql).list();
-			
-			years.each {
-				if(it!=null)
-				{
-					if(yearlist.contains(it.format('yyyy'))==false)
-					{ 
-						yearlist << it.format('yyyy')
-					}	
+			def APost=session.acountPost.parentPost;
+			if(Post.findByNo(APost).parentPost==1)//ï¿½é¿´ï¿½ï¿½Ç°ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô± ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+			{
+				String formId=params.formId;
+				String inChargePost = session.acountPost.parentPost;
+				String receivePost = session.acountPost.parentPost;
+//				inChargePost = session.acountPost.parentPost;
+//				receivePost =  session.acountPost.parentPost;
+				String hql ="select planTime from table${formId}  where receivePost = ${receivePost} and inChargePost = ${inChargePost}" //ï¿½é¿´ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Ô±ï¿½Ï´ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü£ï¿½
+				def yearlist=[];
+				def years = HibernateUtil.getInstance().getCurrentSession().createQuery(hql).list();				
+				years.each {
+					if(it!=null)
+					{
+						if(yearlist.contains(it.format('yyyy'))==false)
+						{
+							yearlist << it.format('yyyy')
+						}
+					}
+						
 				}
 				
-			}		
-			def tableList = dynamic.getTableList();
-			
-			TableDynamic td = tableList.get(Integer.parseInt(formId));
-			def cycle=td.cycle;
-			render(contentType: "application/json",encoding: "gbk") {
-				cc = cycle;
-				year = yearlist;
+				receivePost =  Post.findByNo(receivePost).parentPost;//ï¿½é¿´ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Ô±ï¿½Ï´ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½
+				hql ="select planTime from table"+"${formId} "+" where receivePost ="+"${receivePost}"+" and inChargePost ="+"${inChargePost}"
+				years = HibernateUtil.getInstance().getCurrentSession().createQuery(hql).list();
+				years.each {
+					if(it!=null)
+					{
+						if(yearlist.contains(it.format('yyyy'))==false)
+						{
+							yearlist << it.format('yyyy')
+						}
+					}
+				}
 				
+				inChargePost = Post.findByNo(inChargePost).parentPost; //ï¿½é¿´ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½Ï´ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü£ï¿½		
+				hql ="select planTime from table"+"${formId} "+" where receivePost ="+"${receivePost}"+" and inChargePost ="+"${inChargePost}"	
+				years = HibernateUtil.getInstance().getCurrentSession().createQuery(hql).list();
+				years.each {
+					if(it!=null)
+					{
+						if(yearlist.contains(it.format('yyyy'))==false)
+						{
+							yearlist << it.format('yyyy')
+						}
+					}						
+				}			
+				def tableList = dynamic.getTableList();				
+				TableDynamic td = tableList.get(Integer.parseInt(formId)-1);
+				def cycle=td.cycle;
+				render(contentType: "application/json",encoding: "gbk") {
+					cc = cycle;
+					year = yearlist;
+					
+				}
 			}
-
+			
 		} catch (Exception e) {
-			println e;
+			println(e.getStackTrace()) ;
 		
 		} finally {
-	
+			
 		}
 	}
+	
+	
 	def watchtable()
 	{
 		def table_id=Integer.parseInt(params.gridId)
 		def table_year=Integer.parseInt(params.year)
+		def table_time=Integer.parseInt(params.cycle)
 		def id=table_id-1
 
 		def typeList = tableList.get((int)id);
 		def tableDyList = dynamic.getTableList();
 		Post loginPost = session.acountPost;
-		String chargePost = session.acountPost.no;
+	
 		TableDynamic td = tableDyList.get((int)id);
 		def map=td.entityName;
+		int cycle=Integer.parseInt(td.cycle);
 		Expando table = td.table;
 		def tmap = table.getProperties();
 		def list1 =change(table);
 		def listend = change2(list1);
-		//println list1.toString();
-		java.sql.Date startime=java.sql.Date.valueOf("${(table_year)}-1-1")
-		java.sql.Date endtime=java.sql.Date.valueOf("${(table_year+1)}-1-1")
-
-		String hql ="select ff from table${table_id} ff"+" where receivePost ="+"${chargePost} and planTime<:endtime and planTime>=:startime"
-		Query query= HibernateUtil.getInstance().getCurrentSession().createQuery(hql)
-		query.setTimestamp("startime",startime)
-		query.setTimestamp("endtime",endtime)
-		List list=query.list();
+		java.sql.Date startime;
+		java.sql.Date endtime;
+		switch(cycle){
+			case 6:
+					if(table_time==0)
+					{
+						startime=java.sql.Date.valueOf("${(table_year)}-1-1")
+						endtime=java.sql.Date.valueOf("${(table_year)}-6-1")
+					}				
+					else if(table_time==1)
+					{
+						startime=java.sql.Date.valueOf("${(table_year)}-6-1")
+						endtime=java.sql.Date.valueOf("${(table_year+1)}-1-1")
+					}	
+				
+					break;
+			case 3:
+					switch(table_time)
+					{
+						case 0:					
+							startime=java.sql.Date.valueOf("${(table_year)}-1-1");
+							endtime=java.sql.Date.valueOf("${(table_year)}-4-1");
+							break;					
+						case 1:
+							startime=java.sql.Date.valueOf("${(table_year)}-4-1");
+							endtime=java.sql.Date.valueOf("${(table_year)}-7-1");
+							break;	
+						case 2:
+							startime=java.sql.Date.valueOf("${(table_year)}-7-1");
+							endtime=java.sql.Date.valueOf("${(table_year)}-10-1");
+							break;
+						case 3:
+							startime=java.sql.Date.valueOf("${(table_year)}-10-1");
+							endtime=java.sql.Date.valueOf("${(table_year+1)}-1-1");
+							break;
+					}
+					break;
+			case 1:
+					startime=java.sql.Date.valueOf("${(table_year)}-1-1")
+					endtime=java.sql.Date.valueOf("${(table_year+1)}-1-1")
+					break;
+			case 0:					
+					break;
+		}
+	
+		List list;
+		if(loginPost.unit ==~"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)*qczj")
+		{
+			String chargePost = session.acountPost.no;
+			String hql ="from table${table_id} "+" where receivePost ="+"${chargePost} and planTime<:endtime and planTime>=:startime"
+			Query query= HibernateUtil.getInstance().getCurrentSession().createQuery(hql)
+			query.setTimestamp("startime",startime)
+			query.setTimestamp("endtime",endtime)
+			list=query.list();
+			String sql ="select * from tbl_table${table_id} as tt ,Post as po where tt.initFillPost=po.no and po.parent_post=${chargePost} and tt.receivePost = 2 and planTime<${endtime} and planTime>=${startime}"
+			println sql;
+			query= HibernateUtil.getInstance().getCurrentSession().createSQLQuery(sql)
+		//	query.setTimestamp("startime",startime)
+		//	query.setTimestamp("endtime",endtime)
+			
+			List list2 = query.list();
+			while(!list2.isEmpty())
+			{
+				list << list2.pop();
+			}
+		}
+		else if(loginPost.unit == "xasczj")
+		{
+			String chargePost = session.acountPost.no;
+			String hql ="select ff from table${table_id} ff"+" where receivePost ="+"${chargePost} and planTime<:endtime and planTime>=:startime"
+			Query query= HibernateUtil.getInstance().getCurrentSession().createQuery(hql)
+			query.setTimestamp("startime",startime)
+			query.setTimestamp("endtime",endtime)
+			list=query.list();
+		}
+		
+		
 		def trlist=[];
 		if(list.size != 0 )
 		{

@@ -8,7 +8,12 @@
 		<script type="text/javascript" src="${createLinkTo(dir:'js',file:'extjs/locale/ext-lang-zh_CN.js')}"></script>
 		<title>登陆界面</title>
 		<script type="text/javascript" charset="utf-8">
-				Ext.require([
+
+		function changePic(){
+			　　 $("#imageCaptcha").attr("src","/test/jcaptcha/jpeg/imageCaptcha?id="+new Date());
+			   }
+		   
+		Ext.require([
 		               'Ext.tip.QuickTipManager'
 		        ]);
 		       Ext.onReady(function(){
@@ -16,8 +21,8 @@
 		    	   var denglu= Ext.create('Ext.form.Panel', {
 		    		     x:50,
 	              	     y:70,
-	                     height:120,
-	                     width: 350,
+	                     //height:120,
+	                     //width: 400,
 	                     standardSubmit:true,
 	                     defaultType: 'textfield',
 	                     items: [{
@@ -29,7 +34,38 @@
 	                         name: 'password',
 	                         inputType:'password',
 	                         allowBlank: false
-	                     }],
+	                     },
+		                 {
+			                 xtype:'panel',
+			                 layout:'hbox',
+			                 //width:200,
+			                 //height:80,
+			                 items:[
+					                 {xtype:'textfield',fieldLabel:'验证码',name: 'user_typed_captcha',allowBlank: false},
+					                 {xtype:'panel',width:140,height:35,html:'<img style="-webkit-user-select: none" src="http://localhost:8080/test/jcaptcha/jpeg/imageCaptcha">'}
+					         ]
+			                 //bodyStyle:{background:'url(/test/jcaptcha/jpeg/imageCaptcha?id=${new Date()})'}
+			              }
+
+<%--		                     ,{--%>
+<%--	                         xtype: 'panel',--%>
+<%--	                         itemId: 'reCaptcha',--%>
+<%--	                         border: false,--%>
+<%--	                         html: '<div id="recaptcha">adsf</div>',--%>
+<%--	                         listeners:--%>
+<%--	                              {--%>
+<%--	                                 console.log(Ext.getDom(this.body));--%>
+<%--	                                 Recaptcha.create("heres_my_public_key",--%>
+<%--	                                     Ext.getDom(this.body),--%>
+<%--	                                     {--%>
+<%--	                                         theme: "clean",--%>
+<%--	                                         callback: Recaptcha.focus_response_field--%>
+<%--	                                     }--%>
+<%--	                                 );--%>
+<%--	                             }--%>
+<%--	                         }--%>
+	                     
+		    	    ],
 	                     buttons: [{
 	                         text: '重置',
 	                            handler: function() {
@@ -99,5 +135,9 @@
 		</script> 
 	</head>
     <body bgcolor="#dae7f6">
+<%--    验证码，陈诚添加，勿删--%>
+<%--    <img id="imageCaptcha" width="100px" height="25px" src="/test/jcaptcha/jpeg/imageCaptcha?id=${new Date()}"/>--%>
+<%--<jcaptcha:jpeg name="imageCaptcha" height="500px" width="500px"/>  --%>
+<%--<g:textField name="user_typed_captcha" value="" />--%>
 	</body>
 </html>

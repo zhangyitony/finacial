@@ -8,7 +8,7 @@ import groovy.json.*
 import java.util.Map.Entry
 
 class AcountController extends BaseAdminController {
-
+	def jcaptchaService;
 	def beforeInterceptor = [action:this.&adminAuth,except:["login","redirect","logout"]];
 //	def beforeInterceprtor = [action:this.&auth,expect:['register','save','login','loginCheck','logout']]
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -114,8 +114,21 @@ class AcountController extends BaseAdminController {
 	 * acount login.undone
 	 */
 	def login = {
-		def acount = Acount.findByAcountNameAndPassword(params.acountname,params.password);
 		def tmp;
+//		鍕垮垹锛岄檲璇�		
+		if (jcaptchaService.validateResponse("imageCaptcha", session.id, params.user_typed_captcha))
+		{
+			/* User entered response correctly*/
+		}
+		else
+		{
+			/* User got it wrong, OR THEY ARE A BOT Let's get em.*/
+			tmp =[success:false]
+			redirect(view:"/test");
+			return;
+		}
+		//
+		def acount = Acount.findByAcountNameAndPassword(params.acountname,params.password);
 		String redirectUrl;
 		if(acount){
 			session.acount = acount;

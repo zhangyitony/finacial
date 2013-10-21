@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 	<table tableName= "approval_lowprice_condition" chTableName="西安市廉租住房建设计划审批基本情况统计表1" identifier ="table1" cycle="6">
 		<params name =	"customFileds">
+			<param name ="level1" value="项目大类" type="string"></param>
+			<param name ="level2" value="项目小类" type="string"></param>
+			
+			<param name ="ap_proj_name" value="项目名称" type="string"></param>
+			<param name ="ap_construction_company" value="代建单位" type="string"></param>
+			<param name ="ap_community_name" value="小区名称" type="string"></param>
+			<param name ="ap_construction_address" value="建设地址" type="string"></param>
 			<param name = "approvel_plan" value="计划审批">
-				<param name ="ap_proj_name" value="项目名称" type="string"></param>
-				<param name ="ap_construction_company" value="代建单位" type="string"></param>
-				<param name ="ap_community_name" value="小区名称" type="string"></param>
-				<param name ="ap_construction_address" value="建设地址" type="string"></param>
 				<param name ="ap_approval_filenum" value="审批文件号" type="string"></param>
 				<param name ="ap_sum_plan" value="计划总投资" >
 					<param name ="apsp_sum" value="合计" type="big_decimal"></param>

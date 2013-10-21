@@ -1,5 +1,7 @@
 package cn.gov.xaczj;
 
+import java.io.File;
+
 import org.hibernate.*;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
@@ -48,6 +50,8 @@ public class HibernateUtil {
 			try {
 				configuration = new Configuration().configure();
 				configuration.addClass(Table.class);
+//				File file = new File("/home/tata/Table.hbm.xml");
+//				configuration.addFile(file);
 				System.out.println("ok");
 			} catch (HibernateException e) {
 				System.out.println("failure");

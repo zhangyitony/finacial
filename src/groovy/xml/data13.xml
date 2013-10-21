@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName= "public_rent_providehouse" chTableName="西安市社会租赁保障房（公租房）基本情况统计表13" identifier ="table13" cycle="3">
+		<params name =	"customFileds">
+			<param name ="community_name" value="小区名称" type="string"></param>
+			<param name ="renter" value="出租户">
+				<param name="r_name" value="姓名" type="string"></param>
+				<param name="r_start_end" value="出租起止年限" type="string"></param>
+			</param>
+			<param name="rent_allowance_low50" value="租金补贴（50平方米以下）">
+				<param name="ral_allocated" value="已分配">
+					<param name="rala_name" value="承租保障户姓名" type="string"></param>
+					<param name="rala_area" value="面积" type="big_decimal"></param>
+					<param name="rala_year" value="承租起止年限" type="string"></param>
+					<param name="rala_rentmoney" value="保障户应缴租金" type="big_decimal"></param>
+					<param name="rala_renterrent" value="应支付出租户租金" type="big_decimal"></param>
+					<param name="rala_supplymoney" value="应补租金" type="big_decimal"></param>
+				</param>
+				<param name="ral_free" value="空置房">
+					<param name="ralf_time" value="空置时间" type="string"></param>
+					<param name="ralf_rent" value="应支付出租户租金" type="big_decimal"></param>
+				</param>
+			</param> 
+			<param name="rent_allowance_high50" value="租金补贴（50平方米以上）">
+				<param name="rah_allocated" value="已分配">
+					<param name="raha_name" value="承租保障户姓名" type="string"></param>
+					<param name="raha_area" value="面积" type="big_decimal"></param>
+					<param name="raha_year" value="承租起止年限" type="string"></param>
+					<param name="raha_rentmoney" value="保障户应缴租金" type="big_decimal"></param>
+					<param name="raha_renterrent" value="应支付出租户租金" type="big_decimal"></param>
+					<param name="raha_supplymoney" value="应补租金" type="big_decimal"></param>
+				</param>
+			</param>
+			<param name="rent_money" value="应补资金">
+				<param name="rm_sum" value="合计" type="big_decimal"></param>
+				<param name="rm_citymoney" value="市财政应补租金" type="big_decimal"></param>
+				<param name="rm_townmoney" value="区县财政应补租金" type="big_decimal"></param>
+			</param>
+			<param name="comment" value="备注" type="string"></param>
+
+		</params>
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>		
+	</table>

@@ -15,8 +15,9 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:sqlserver://192.168.2.194:1433;databaseName=xianFinacial"
-        }
+//            url = "jdbc:sqlserver://192.168.2.194:1433;databaseName=xianFinacial"
+			  url = "jdbc:sqlserver://192.168.2.194:1433;databaseName=test_dev_chen"
+		}
     }
     test {
         dataSource {

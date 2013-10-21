@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<table tableName= "public_finish" chTableName="西安市公共租赁住房建设竣工基本情况表10" identifier ="table10" cycle="0">
+		<params name =	"customFileds">
+			<param name="proj_name" value="项目名称" type="string"></param>
+			<param name="proj_plan_approval" value="项目计划审批">
+				<param name="ppa_total" value="总投资(财政投资)">
+					<param name="ppat_little" value="小计" type="big_decimal"></param>
+					<param name="ppat_center" value="中央财政" type="big_decimal"></param>
+					<param name="ppat_province" value="省财政" type="big_decimal"></param>
+					<param name="ppat_city" value="市财政" type="big_decimal"></param>
+					<param name="ppat_town" value="区县财政" type="big_decimal"></param>
+					<param name="ppa_other" value="其他资金" type="big_decimal"></param>
+				</param>
+				<param name="ppa_total_construction_area" value="总建筑面积" type="big_decimal"></param>
+				<param name="ppa_live_construction_area" value="住房建筑面积" type="big_decimal"></param>
+				<param name="ppa_business_construction_area" value="商业建筑面积" type="big_decimal"></param>
+				<param name="ppa_public_area" value="公共配套设施面积" type="big_decimal"></param>
+				<param name="ppa_other_area" value="其他面积" type="big_decimal"></param>
+				<param name="ppa_house_num" value="住房套数" type="big_decimal"></param>
+				<param name="ppa_land_area" value="征地亩数" type="big_decimal"></param>
+				<param name="ppa_only_area" value="净用地亩数" type="big_decimal"></param>
+			</param>
+			<param name="fact_finish" value="实际完成投资">
+				<param name="ff_little" value="小计" type="big_decimal"></param>
+				<param name="ff_project" value="建安工程投资" type="big_decimal"></param>
+				<param name="ff_equip" value="设备投资" type="big_decimal"></param>
+				<param name="ff_wait" value="待摊投" type="big_decimal"></param>
+				<param name ="ff_other" value="其它投资" type="big_decimal"></param>
+			</param>
+			<param name="finance_fact" value="财政实际投资">
+				<param name="ffa_little" value="小计" type="big_decimal"></param>
+				<param name="ffa_center" value="中央财政投资" type="big_decimal"></param>
+				<param name="ffa_province" value="省财政投资" type="big_decimal"></param>
+				<param name="ffa_city" value="市财政投资" type="big_decimal"></param>
+				<param name="ffa_town" value="区县财政投资" type="big_decimal"></param>
+			</param>
+			<param name="other_invest" value="其它投资">
+				<param name="oi_little" value="小计" type="big_decimal"></param>
+				<param name="oi_accumulate" value="累计银行借款" type="big_decimal"></param>
+				<param name="oi_return" value="累计还款" type="big_decimal"></param>
+				<param name="oi_bank" value="期末银行借款" type="big_decimal"></param>
+				<param name="oi_other" value="其它资金" type="big_decimal"></param>
+			</param>
+			<param name="distance_invest" value="投资来源差额" type="big_decimal"></param>
+			<param name="fact_finish_task" value="实际完成建设任务">
+				<param name="fft_totalarea" value="总建筑面积" type="big_decimal"></param>
+				<param name="fft_livearea" value="住房建筑面积" type="big_decimal"></param>
+				<param name="fft_businessarea" value="商业配套面积" type="big_decimal"></param>
+				<param name="fft_publicarea" value="公共配套设施面积" type="big_decimal"></param>
+				<param name="fft_other" value="其他面积" type="big_decimal"></param>
+				<param name="fft_house" value="住房套数" type="integer"></param>
+				<param name="fft_land" value="征地">
+					<param name="fftl_sumarea" value="总亩数" type="big_decimal"></param>
+					<param name="fftl_replace" value="代征亩数" type="big_decimal"></param>
+				</param>
+			</param>
+			<param name="fact_treasure" value="实际形成的资产">
+				<param name="ft_little" value="小计" type="big_decimal"></param>
+				<param name="ft_fix" value="固定资产" type="big_decimal"></param>
+				<param name="ft_flow" value="流动资产" type="big_decimal"></param>
+				<param name="ft_other" value="其它资产" type="big_decimal"></param>
+			</param>
+			<param name="fact_allocate_house" value="实际已分配住房套数" type="big_decimal"></param>
+			<param name="fact_finish_date" value="实际竣工日期" type="date"></param>
+			<param name="registration" value="产权登记" >
+				<param name="r_land_ID" value="土地使用证号" type="string"></param>
+				<param name="r_house_ID" value="房产证号" type="string"></param>
+			</param>
+			<param name="thing_company" value="物业管理公司" type="string"></param>
+			<param name="money_standard" value="租金标准" type="string"></param>
+
+
+
+		</params>
+		<operate result = "sum">
+	 		<operator name="-">
+	 			<num name="investgatePlan"></num>
+	 			<num name="loan"></num>
+			</operator>
+	 	</operate>		
+	</table>

@@ -1,12 +1,12 @@
 [                     
-				      {id:"18",text:"汇总表",expended:true,"children":[
-								{id:"17",text:"**区建设单位汇总",leaf:true}
+				      {id:"00",text:"汇总表",expended:true,"children":[
+								{id:"002",text:"区建设单位汇总",leaf:true}
 					 ]},
-					 {id:"19",text:"原始表",expended:true,"children":[
-					      {id:"20",text:"**区财政局",leaf:true},
-					      {id:"21",text:"**区建设单位",extended:true,"children":[
-					              {id:"22",text:"**区建一",leaf:true},
-					              {id:"22",text:"**区建二",leaf:true}
+					 {id:"01",text:"原始表",expended:true,"children":[
+					      {id:"010",text:"区财政局",leaf:true},
+					      {id:"011",text:"区建设单位",extended:true,"children":[
+					              {id:"0110",text:"区建一",leaf:true},
+					              {id:"0111",text:"区建二",leaf:true}
 					       ]}
 					 ]}
 ]

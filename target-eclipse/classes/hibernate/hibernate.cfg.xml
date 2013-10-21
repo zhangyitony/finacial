@@ -7,12 +7,12 @@
 
 	<session-factory>
 
-     <property name="show_sql">true</property>
+     <property name="show_sql">false</property>
      
      <property name="cglib.use_reflection_optimizer">true</property>
 
      <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-     <property name="hibernate.connection.url">jdbc:sqlserver://192.168.2.194:1433;databaseName=xianFinacial</property>
+     <property name="hibernate.connection.url">jdbc:sqlserver://192.168.2.194:1433;databaseName=test_dev_chen</property>
      <property name="hibernate.connection.username">sa</property>
      <property name="hibernate.connection.password">xx</property>
      <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>

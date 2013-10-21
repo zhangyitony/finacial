@@ -1,5 +1,5 @@
 [                  
-				     {id:"18",text:"汇总表",expended:true,"children":[
+				     {id:"00",text:"汇总表",expended:true,"children":[
 				                {id:"000",text:"市本级财政汇总",leaf:true},
 								{id:"001",text:"区县/开发区财政汇总",expended:true,"children":[			
 										{id:"0010",text:"区县财政汇总",leaf:true},
@@ -34,7 +34,59 @@
 										]}
 								]}
 					 ]},
-					 {id:"20",text:"原始表",expended:true,"children":[
-					      {id:"010",text:"西安市本级财政",leaf:true}
+					 {id:"01",text:"原始表",expended:true,"children":[
+					      {id:"010",text:"西安市本级财政",leaf:true},
+					      {id:"011",text:"区县财政",expended:true,"children":[
+  	   							{id:"01100",text:"碑林区财政局",leaf:true},
+								{id:"01101",text:"未央区财政局",leaf:true},
+								{id:"01102",text:"莲湖区财政局",leaf:true},
+								{id:"01103",text:"雁塔区财政局",leaf:true},
+								{id:"01104",text:"新城区财政局",leaf:true},
+								{id:"01105",text:"灞桥区财政局",leaf:true},
+								{id:"01106",text:"长安区财政局",leaf:true},
+								{id:"01107",text:"临潼区财政局",leaf:true},
+								{id:"01108",text:"阎良区财政局",leaf:true},
+								{id:"01109",text:"户县财政局",leaf:true},
+								{id:"01110",text:"蓝田县财政局",leaf:true},
+								{id:"01111",text:"周至县财政局",leaf:true},
+								{id:"01112",text:"高陵县财政局",leaf:true},
+					      ]},
+                         {id:"012",text:"开发区财政",expended:true,"children":[
+       							{id:"0120",text:"经开区财政局",leaf:true},
+								{id:"0121",text:"高新区财政局",leaf:true},
+								{id:"0122",text:"曲江新区财政局",leaf:true},
+								{id:"0123",text:"航天基地财政局",leaf:true},
+								{id:"0124",text:"航空基地财政局",leaf:true},
+								{id:"0125",text:"浐灞财政局",leaf:true},
+								{id:"0126",text:"沣东新城财政局",leaf:true},
+								{id:"0127",text:"国际港务区财政局",leaf:true}
+                         ]},
+					      {id:"013",text:"建设单位",expended:true,"children":[
+					            {id:"0130",text:"十三区县建设单位",expended:true,"children":[
+						       			{id:"013000",text:"碑林区建设单位",leaf:true},
+										{id:"013001",text:"未央区建设单位",leaf:true},
+										{id:"013002",text:"莲湖区建设单位",leaf:true},
+										{id:"013003",text:"雁塔区建设单位",leaf:true},
+										{id:"013004",text:"新城区建设单位",leaf:true},
+										{id:"013005",text:"灞桥区建设单位",leaf:true},
+										{id:"013006",text:"长安区建设单位",leaf:true},
+										{id:"013007",text:"临潼区建设单位",leaf:true},
+										{id:"013008",text:"阎良区建设单位",leaf:true},
+										{id:"013009",text:"户县建设单位",leaf:true},
+										{id:"013010",text:"蓝田县建设单位",leaf:true},
+										{id:"013011",text:"周至县建设单位",leaf:true},
+										{id:"013012",text:"高陵县建设单位",leaf:true},
+								 ]},
+								{id:"0131",text:"开发区建设单位",expended:true,"children":[
+						      			{id:"01310",text:"经开区建设单位",leaf:true},
+										{id:"01311",text:"高新区建设单位",leaf:true},
+										{id:"01312",text:"曲江新区建设单位",leaf:true},
+										{id:"01313",text:"航天基地建设单位",leaf:true},
+										{id:"01314",text:"航空基地建设单位",leaf:true},
+										{id:"01315",text:"浐灞建设单位总",leaf:true},
+										{id:"01316",text:"沣东新城建设单位",leaf:true},
+										{id:"01317",text:"国际港务区建设单位",leaf:true}
+								]}
+					      ]}
 					 ]}
 ]
